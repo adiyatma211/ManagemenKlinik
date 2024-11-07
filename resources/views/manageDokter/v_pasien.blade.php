@@ -144,6 +144,29 @@
     </div>
 
     <script>
+        function calculateAge() {
+            const birthDate = new Date(document.getElementById('tgllahir').value);
+            const today = new Date();
+
+            // Check if birth date is invalid, then clear the umur field
+            if (isNaN(birthDate)) {
+                document.getElementById('umur').value = ''; // Clear field if date is invalid
+                return;
+            }
+
+            let age = today.getFullYear() - birthDate.getFullYear();
+            const monthDifference = today.getMonth() - birthDate.getMonth();
+            const dayDifference = today.getDate() - birthDate.getDate();
+
+            // Adjust age if the birthday hasn't occurred yet this year
+            if (monthDifference < 0 || (monthDifference === 0 && dayDifference < 0)) {
+                age--;
+            }
+
+            // Set "X tahun" format in the readonly umur input field
+            document.getElementById('umur').value = age;
+        }
+
         function openPatientModal(action, no_rm = null) {
             const isEdit = action === 'edit';
             document.getElementById('patientModalLabel').innerText = isEdit ? 'Edit Data Pasien' : 'Tambah Data Pasien';

@@ -13,15 +13,18 @@ return new class extends Migration
     {
         Schema::create('pasien_models', function (Blueprint $table) {
             $table->id('no_rm'); // Auto-increment primary key
-            $table->string('nama_pasien');
-            $table->string('alamat');
-            $table->string('jenis_kelamin');
-            $table->string('no_telp');
+            $table->string('nama_pasien')->nullable();
+            $table->string('alamat')->nullable();
+            $table->string('jenis_kelamin')->nullable();
+            $table->string('no_telp')->nullabke();
             $table->date('tgllahir')->nullable();
             $table->integer('umur')->nullable();
             $table->dateTime('tgl_masuk')->nullable();
+            $table->dateTime('tgl_periksa')->nullable();
             $table->string('departemen')->nullable();
             $table->string('daftarDokter')->nullable();
+            $table->string('createdBy')->nullable();
+            $table->string('updatedBy')->nullable();
             $table->timestamps();
         });
     }

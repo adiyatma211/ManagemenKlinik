@@ -15,8 +15,13 @@ class PagesController
 
     public function pasien(){
         $ShowPatien = PasienModel::all();
-
         return view('manageDokter.v_pasien', compact('ShowPatien'));
+    }
+
+
+    public function riwayatPasien(){
+
+        return view('manageDokter.v_rekampasien');
 
     }
 

@@ -91,10 +91,10 @@
                             <ul class="submenu ">
 
                                 <li class="submenu-item  ">
-                                    <a href="component-accordion.html" class="submenu-link">Daftar Pasien</a>
+                                    <a href="/managePasien" class="submenu-link">Daftar Pasien</a>
                                 </li>
                                 <li class="submenu-item  ">
-                                    <a href="component-accordion.html" class="submenu-link">Rekam Medis Pasien</a>
+                                    <a href="/riwayatPasien" class="submenu-link">Rekam Medis Pasien</a>
                                 </li>
                             </ul>
                         </li>
