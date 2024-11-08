@@ -32,9 +32,19 @@ class PagesController
     }
 
     public function riwayatPasien(){
-        $ShowRekam = RekamPasienModel::all();
-        return view('manageDokter.v_rekampasien', compact('ShowRekam'));
+        // $ShowRekam = RekamPasienModel::all();
+        $ShowRekam = RekamPasienModel::whereHas('pasien', function ($query) {
+            $query->whereDate('tgl_periksa', today());
+        })->get();
+        $patientCount = $ShowRekam->count();
+      
 
+        return view('manageDokter.v_rekampasien', compact('ShowRekam', 'patientCount'));
+    }
+
+    public function updateRiwayat(){
+
+        return view('manageDokter.c_rekampasien');
     }
 
 

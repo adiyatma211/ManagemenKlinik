@@ -3,6 +3,7 @@
 use App\Http\Controllers\ManagemenDokter\DepartemenModelController;
 use App\Http\Controllers\ManagemenDokter\DokterModelController;
 use App\Http\Controllers\ManagemenDokter\PasienModelController;
+use App\Http\Controllers\ManagemenDokter\RekamPasienController;
 use App\Http\Controllers\PagesController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -40,8 +41,15 @@ Route::middleware(['auth', CheckRole::class . ':admin'])->group(function () {
     });
 });
 
+// Parameter Dokter -Departemen dan Admin
+Route::get('/departemen',[PagesController::class,'departemen'])->name('view.departemen');
+Route::post('/departemen/tambah',[DepartemenModelController::class,'store'])->name('store.departemen');
+Route::get('/departemen/edit/{id}',[DepartemenModelController::class,'edit'])->name('edit.departemen');
+Route::post('/departemen/update/{id}',[DepartemenModelController::class,'update'])->name('update.departemen');
+Route::delete('/departemen/delete/{id}',[DepartemenModelController::class,'destroy'])->name('destroy.departemen');
 
-// Managemen Pasien Level Dokter
+
+// Managemen Pasien  -Dokter
 Route::get('/dokter',[PagesController::class,'dokter'])->name('view.dokter');
 Route::post('/dokter/tambah',[DokterModelController::class,'store'])->name('store.dokter');
 Route::get('/dokter/edit/{id}',[DokterModelController::class,'edit'])->name('edit.dokter');
@@ -49,15 +57,17 @@ Route::post('/dokter/update/{id}',[DokterModelController::class,'update'])->name
 Route::delete('/dokter/delete/{id}',[DokterModelController::class,'destroy'])->name('destroy.dokter');
 
 
-
-
+// Riwayat Pasien -Dokter
 Route::get('/riwayatPasien',[PagesController::class,'riwayatPasien'])->name('view.riwayat');
-Route::get('/departemen',[PagesController::class,'departemen'])->name('view.departemen');
-// Parameter Dokter -Departemen
-Route::post('/departemen/tambah',[DepartemenModelController::class,'store'])->name('store.departemen');
-Route::get('/departemen/edit/{id}',[DepartemenModelController::class,'edit'])->name('edit.departemen');
-Route::post('/departemen/update/{id}',[DepartemenModelController::class,'update'])->name('update.departemen');
-Route::delete('/departemen/delete/{id}',[DepartemenModelController::class,'destroy'])->name('destroy.departemen');
+Route::get('/riwayatPasien/tindakan',[PagesController::class,'updateRiwayat'])->name('view.tindakan');
+Route::post('/riwayatPasien/store', [RekamPasienController::class, 'store'])->name('patients.store');
+Route::get('/riwayatPasien/{id}/edit', [RekamPasienController::class, 'edit'])->name('patients.edit');
+Route::post('/riwayatPasien/{id}', [RekamPasienController::class, 'update'])->name('patients.update');
+Route::delete('/riwayatPasien/{id}', [RekamPasienController::class, 'destroy'])->name('patients.destroy');
+
+
+
+
 
 
 
