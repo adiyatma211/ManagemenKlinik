@@ -39,7 +39,7 @@
                                         <td>{{ $key + 1 }}</td>
                                         <td>{{ $a->no_rm }}</td>
                                         <td>{{ $a->nama_pasien }}</td>
-                                        <td>{{ $a->daftarDokter }}</td>
+                                        <td>{{ $a->dokter->nama_dokter ?? 'N/A' }}</td>
                                         <td>{{ $a->tgl_masuk }}</td>
                                         <td>{{ $a->tgl_periksa }}</td>
                                         <td>{{ $a->createdBy }}</td>
@@ -116,15 +116,19 @@
                         </div>
                         <label for="departemen">Departemen Periksa:</label>
                         <div class="form-group">
-                            <select class="form-select" id="departemen">
-                                <option>IT</option>
-                                <option>Blade Runner</option>
-                                <option>Thor Ragnarok</option>
+                            <select class="form-select" id="departemen" name="departemen" onchange="fetchDoctors()">
+                                <option value="">Pilih Departemen</option>
+                                @foreach ($departemenList as $departemen)
+                                    <option value="{{ $departemen->id }}">{{ $departemen->nama_departemen }}</option>
+                                @endforeach
                             </select>
                         </div>
+
                         <label for="daftardokter">Daftar Dokter:</label>
                         <div class="form-group">
-                            <input id="daftardokter" type="text" class="form-control">
+                            <select class="form-select" id="daftardokter" name="daftarDokterId">
+                                <option value="">Pilih Dokter</option>
+                            </select>
                         </div>
                         <label for="tgl_periksa">Tanggal Periksa:</label>
                         <div class="form-group">
@@ -144,13 +148,37 @@
     </div>
 
     <script>
+        function fetchDoctors(departemenId, callback) {
+            const dokterSelect = document.getElementById('daftardokter');
+
+            // Kosongkan daftar dokter setiap kali departemen berubah
+            dokterSelect.innerHTML = '<option value="">Pilih Dokter</option>';
+
+            if (departemenId) {
+                fetch(`/managePasien/${departemenId}`)
+                    .then(response => response.json())
+                    .then(doctors => {
+                        doctors.forEach(dokter => {
+                            const option = document.createElement('option');
+                            option.value = dokter.id;
+                            option.text = dokter.nama_dokter;
+                            dokterSelect.appendChild(option);
+                        });
+
+                        // Callback untuk mengatur dokter setelah daftar terisi
+                        if (typeof callback === "function") callback();
+                    })
+                    .catch(error => console.error('Error fetching doctors:', error));
+            }
+        }
+
+
         function calculateAge() {
             const birthDate = new Date(document.getElementById('tgllahir').value);
             const today = new Date();
 
-            // Check if birth date is invalid, then clear the umur field
             if (isNaN(birthDate)) {
-                document.getElementById('umur').value = ''; // Clear field if date is invalid
+                document.getElementById('umur').value = '';
                 return;
             }
 
@@ -158,96 +186,104 @@
             const monthDifference = today.getMonth() - birthDate.getMonth();
             const dayDifference = today.getDate() - birthDate.getDate();
 
-            // Adjust age if the birthday hasn't occurred yet this year
             if (monthDifference < 0 || (monthDifference === 0 && dayDifference < 0)) {
                 age--;
             }
 
-            // Set "X tahun" format in the readonly umur input field
             document.getElementById('umur').value = age;
         }
 
-        function openPatientModal(action, no_rm = null) {
-            const isEdit = action === 'edit';
-            document.getElementById('patientModalLabel').innerText = isEdit ? 'Edit Data Pasien' : 'Tambah Data Pasien';
-            document.getElementById('submitPatientBtn').innerText = isEdit ? 'Update' : 'Simpan';
 
-            if (isEdit) {
-                fetch(`/managePasien/edit/${no_rm}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            document.getElementById('patient_no_rm').value = no_rm;
-                            document.getElementById('namapasien').value = data.patient.nama_pasien;
-                            document.getElementById('alamat').value = data.patient.alamat;
-                            document.getElementById('telepon').value = data.patient.no_telp;
-                            document.getElementById('tgllahir').value = data.patient.tgllahir;
-                            document.getElementById('umur').value = data.patient.umur;
-                            document.getElementById('tgl_masuk').value = data.patient.tgl_masuk;
-                            document.getElementById('departemen').value = data.patient.departemen;
-                            document.getElementById('daftardokter').value = data.patient.daftarDokter;
-                            document.getElementById('tgl_periksa').value = data.patient.tgl_periksa;
-
-                            if (data.patient.jenis_kelamin === 'Laki-Laki') {
-                                document.getElementById('jkLaki').checked = true;
-                            } else if (data.patient.jenis_kelamin === 'Perempuan') {
-                                document.getElementById('jkPerempuan').checked = true;
-                            }
-                        } else {
-                            alert(data.message);
-                        }
-                    })
-                    .catch(error => console.error('Error:', error));
-            } else {
-                document.getElementById('formPasien').reset();
-                document.getElementById('patient_no_rm').value = '';
-            }
-
-            $('#patientModal').modal('show');
+        function setFormReadOnly(isReadOnly) {
+            document.getElementById('namapasien').readOnly = isReadOnly;
+            document.getElementById('alamat').readOnly = isReadOnly;
+            document.getElementById('telepon').readOnly = isReadOnly;
+            document.getElementById('tgllahir').readOnly = isReadOnly;
+            document.getElementById('umur').readOnly = isReadOnly;
+            document.getElementById('tgl_masuk').readOnly = isReadOnly;
+            document.getElementById('tgl_periksa').readOnly = isReadOnly;
+            document.getElementById('departemen').disabled = isReadOnly;
+            document.getElementById('daftardokter').disabled = isReadOnly;
+            document.getElementById('jkLaki').disabled = isReadOnly;
+            document.getElementById('jkPerempuan').disabled = isReadOnly;
         }
+
 
         function submitPatientForm() {
             const no_rm = document.getElementById('patient_no_rm').value;
             const url = no_rm ? `/managePasien/update/${no_rm}` : '{{ route('save.pasien') }}';
             const method = no_rm ? 'POST' : 'POST';
 
-            // Check if each element exists before accessing `.value`
-            const nama_pasien = document.getElementById('namapasien') ? document.getElementById('namapasien').value : '';
-            const alamat_pasien = document.getElementById('alamat') ? document.getElementById('alamat').value : '';
-            const telepon = document.getElementById('telepon') ? document.getElementById('telepon').value : '';
-            const tgllahir = document.getElementById('tgllahir') ? document.getElementById('tgllahir').value : '';
-            const umur = document.getElementById('umur') ? document.getElementById('umur').value : '';
-            const tgl_masuk = document.getElementById('tgl_masuk') ? document.getElementById('tgl_masuk').value : '';
-            const departemen = document.getElementById('departemen') ? document.getElementById('departemen').value : '';
-            const daftarDokter = document.getElementById('daftardokter') ? document.getElementById('daftardokter').value :
-                '';
-            const tgl_periksa = document.getElementById('tgl_periksa') ? document.getElementById('tgl_periksa').value : '';
+            // Ambil nilai dari setiap input
+            const nama_pasien = document.getElementById('namapasien');
+            const alamat_pasien = document.getElementById('alamat');
+            const jenis_kelamin_pasien = document.querySelector('input[name="jenis_kelamin"]:checked');
+            const telepon = document.getElementById('telepon');
+            const tgllahir = document.getElementById('tgllahir');
+            const umur = document.getElementById('umur');
+            const tgl_masuk = document.getElementById('tgl_masuk');
+            const departemen = document.getElementById('departemen');
+            const daftarDokterId = document.getElementById('daftardokter');
+            const tgl_periksa = document.getElementById('tgl_periksa');
 
-            // Check if a gender radio button is selected
-            const jenis_kelamin_radio = document.querySelector('input[name="jenis_kelamin"]:checked');
-            const jenis_kelamin_pasien = jenis_kelamin_radio ? jenis_kelamin_radio.value : '';
+            // Validasi: Reset style input field
+            const inputFields = [nama_pasien, alamat_pasien, telepon, tgllahir, umur, tgl_masuk, departemen, daftarDokterId,
+                tgl_periksa
+            ];
+            inputFields.forEach(field => field.style.borderColor = ''); // Reset border color
 
-            // Ensure that the required fields are filled
-            if (!nama_pasien || !alamat_pasien || !jenis_kelamin_pasien || !telepon || !tgllahir) {
+            // Validasi: Pastikan semua input yang diperlukan diisi
+            let isValid = true;
+            if (!nama_pasien.value) {
+                nama_pasien.style.borderColor = 'red';
+                isValid = false;
+            }
+            if (!alamat_pasien.value) {
+                alamat_pasien.style.borderColor = 'red';
+                isValid = false;
+            }
+            if (!jenis_kelamin_pasien) {
                 Swal.fire({
                     icon: 'error',
                     title: 'Error',
-                    text: 'Please fill in all required fields.'
+                    text: 'Please select gender.'
+                });
+                isValid = false;
+            }
+            if (!telepon.value) {
+                telepon.style.borderColor = 'red';
+                isValid = false;
+            }
+            if (!tgllahir.value) {
+                tgllahir.style.borderColor = 'red';
+                isValid = false;
+            }
+            if (!umur.value) {
+                umur.style.borderColor = 'red';
+                isValid = false;
+            }
+
+            if (!isValid) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Please fill in all required fields marked in red.'
                 });
                 return;
             }
 
+            // Buat data untuk dikirimkan
             const data = {
-                nama_pasien,
-                alamat_pasien,
-                jenis_kelamin_pasien,
-                telepon,
-                tgllahir,
-                umur,
-                tgl_masuk,
-                departemen,
-                daftarDokter,
-                tgl_periksa
+                nama_pasien: nama_pasien.value,
+                alamat_pasien: alamat_pasien.value,
+                jenis_kelamin_pasien: jenis_kelamin_pasien.value,
+                telepon: telepon.value,
+                tgllahir: tgllahir.value,
+                umur: umur.value,
+                tgl_masuk: tgl_masuk.value,
+                departemen: departemen.value,
+                daftarDokterId: daftarDokterId.value,
+                tgl_periksa: tgl_periksa.value
             };
 
             fetch(url, {
@@ -280,8 +316,144 @@
                 });
         }
 
+        function openPatientModal(action, no_rm = null) {
+            const isEdit = action === 'edit';
+            const isView = action === 'view';
+            document.getElementById('patientModalLabel').innerText = isEdit ? 'Edit Data Pasien' : (isView ?
+                'Detail Pasien' : 'Tambah Data Pasien');
+            document.getElementById('submitPatientBtn').style.display = isView ? 'none' : 'block';
+            setFormReadOnly(isView);
+
+            if (isEdit || isView) {
+                fetch(`/managePasien/edit/${no_rm}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            document.getElementById('patient_no_rm').value = no_rm;
+                            document.getElementById('namapasien').value = data.patient.nama_pasien;
+                            document.getElementById('alamat').value = data.patient.alamat;
+                            document.getElementById('telepon').value = data.patient.no_telp;
+                            document.getElementById('tgllahir').value = data.patient.tgllahir;
+                            document.getElementById('umur').value = data.patient.umur;
+
+                            // Mengatur nilai tgl_masuk dan tgl_periksa dengan hanya mengambil bagian tanggal
+                            document.getElementById('tgl_masuk').value = data.patient.tgl_masuk ? data.patient.tgl_masuk
+                                .split(' ')[0] : '';
+                            document.getElementById('tgl_periksa').value = data.patient.tgl_periksa ? data.patient
+                                .tgl_periksa.split(' ')[0] : '';
+
+                            // Set departemen dan dokter
+                            document.getElementById('departemen').value = data.patient.departemen;
+                            fetchDoctors(data.patient.departemen, data.patient.daftarDokterId);
+
+                            // Set jenis kelamin
+                            if (data.patient.jenis_kelamin === 'Laki-Laki') {
+                                document.getElementById('jkLaki').checked = true;
+                            } else if (data.patient.jenis_kelamin === 'Perempuan') {
+                                document.getElementById('jkPerempuan').checked = true;
+                            }
+
+                            $('#patientModal').modal('show');
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: data.message
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching patient data:', error);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'An error occurred while fetching patient data.'
+                        });
+                    });
+            } else {
+                // Reset form untuk mode "Tambah"
+                document.getElementById('formPasien').reset();
+                document.getElementById('patient_no_rm').value = '';
+                document.getElementById('departemen').value = ''; // Reset dropdown departemen
+                document.getElementById('daftardokter').innerHTML =
+                    '<option value="">Pilih Dokter</option>'; // Reset daftar dokter
+                document.getElementById('jkLaki').checked = false; // Reset radio button
+                document.getElementById('jkPerempuan').checked = false;
+
+                // Tambahkan event listener untuk muat dokter saat departemen dipilih
+                document.getElementById('departemen').addEventListener('change', function() {
+                    fetchDoctors(this.value);
+                });
+
+                $('#patientModal').modal('show');
+            }
+        }
+
+
+
+        function viewPatient(no_rm) {
+            fetch(`/managePasien/edit/${no_rm}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById('patientModalLabel').innerText = 'Detail Pasien';
+                        document.getElementById('submitPatientBtn').style.display = 'none'; // Sembunyikan tombol submit
+
+                        // Isi setiap field dengan data dari database
+                        document.getElementById('namapasien').value = data.patient.nama_pasien;
+                        document.getElementById('alamat').value = data.patient.alamat;
+                        document.getElementById('telepon').value = data.patient.no_telp;
+                        document.getElementById('tgllahir').value = data.patient.tgllahir;
+                        document.getElementById('umur').value = data.patient.umur;
+
+                        // Pisahkan tanggal dari waktu
+                        document.getElementById('tgl_masuk').value = data.patient.tgl_masuk ? data.patient.tgl_masuk
+                            .split(' ')[0] : '';
+                        document.getElementById('tgl_periksa').value = data.patient.tgl_periksa ? data.patient
+                            .tgl_periksa.split(' ')[0] : '';
+
+                        // Set jenis kelamin sesuai data dari database
+                        if (data.patient.jenis_kelamin === 'Laki-Laki') {
+                            document.getElementById('jkLaki').checked = true;
+                        } else if (data.patient.jenis_kelamin === 'Perempuan') {
+                            document.getElementById('jkPerempuan').checked = true;
+                        }
+
+                        // Panggil fetchDoctors dengan departemen dan set daftarDokter setelah dropdown terisi
+                        document.getElementById('departemen').value = data.patient.departemen;
+                        fetchDoctors(data.patient.departemen, () => {
+                            document.getElementById('daftardokter').value = data.patient.daftarDokterId;
+                        });
+
+                        // Set form menjadi read-only
+                        setFormReadOnly(true);
+
+                        $('#patientModal').modal('show');
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: data.message
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching patient data:', error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'An error occurred while fetching patient data.'
+                    });
+                });
+        }
+
+
+
+
+
+
+
         function deletePasien(no_rm) {
-            // Show a confirmation dialog using SweetAlert
             Swal.fire({
                 title: 'Apakah Anda Akan Menghapus ?',
                 text: "Data Tidak akan dapat di kembalikan",
@@ -292,12 +464,11 @@
                 confirmButtonText: 'Iya, Hapus'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // If confirmed, proceed with the deletion
                     fetch(`/managePasien/delete/${no_rm}`, {
                             method: 'DELETE',
                             headers: {
                                 'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': '{{ csrf_token() }}' // CSRF token for Laravel
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
                             }
                         })
                         .then(response => response.json())
@@ -309,9 +480,7 @@
                                     text: result.message,
                                     timer: 2000,
                                     showConfirmButton: false
-                                }).then(() => {
-                                    location.reload(); // Reload the page after deletion
-                                });
+                                }).then(() => location.reload());
                             } else {
                                 Swal.fire({
                                     icon: 'error',

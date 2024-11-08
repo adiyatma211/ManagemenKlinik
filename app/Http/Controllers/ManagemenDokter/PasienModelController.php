@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\ManagemenDokter;
+use App\Models\DokterModel;
 use App\Models\PasienModel;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -39,10 +40,11 @@ class PasienModelController extends Controller
                 'umur' => $request->umur,
                 'tgl_masuk' => $request->tgl_masuk,
                 'tgl_periksa' => $request->tgl_periksa,
-                'departemen' => $request->departemen,
-                'daftarDokter' => $request->daftarDokter,
+                'departemen' => $request->departemen, // Menggunakan `departemen`
+                'daftarDokterId' => $request->daftarDokterId, // Menggunakan `daftarDokterId`
                 'createdBy' => Auth::user()->name,
             ]);
+
             return response()->json([
                 'success' => true,
                 'message' => 'Data pasien berhasil disimpan',
@@ -92,21 +94,16 @@ class PasienModelController extends Controller
      */
     public function update(Request $request, $no_rm)
     {
-        // Find the patient by their primary key, no_rm
         $patient = PasienModel::findOrFail($no_rm);
 
-
-        // Check if the patient exists
         if (!$patient) {
             return response()->json([
                 'success' => false,
                 'message' => 'Data pasien tidak ditemukan',
-                'data' => null,
             ], 404);
         }
 
         try {
-            // Update the patient's data
             $patient->update([
                 'nama_pasien' => $request->nama_pasien,
                 'alamat' => $request->alamat_pasien,
@@ -116,8 +113,8 @@ class PasienModelController extends Controller
                 'umur' => $request->umur,
                 'tgl_masuk' => $request->tgl_masuk,
                 'tgl_periksa' => $request->tgl_periksa,
-                'departemen' => $request->departemen,
-                'daftarDokter' => $request->daftarDokter,
+                'departemen' => $request->departemen, // Menggunakan `departemen`
+                'daftarDokterId' => $request->daftarDokterId, // Menggunakan `daftarDokterId`
                 'updatedBy' => Auth::user()->name,
             ]);
 
@@ -171,6 +168,12 @@ class PasienModelController extends Controller
                 'error' => $e->getMessage(),
             ], 500);
         }
+    }
+
+    public function getDoctorsByDepartment($departemenId)
+    {
+        $doctors = DokterModel::where('departemenId', $departemenId)->get(['id', 'nama_dokter']);
+        return response()->json($doctors);
     }
 
 }

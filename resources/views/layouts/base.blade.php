@@ -96,6 +96,18 @@
                                 <li class="submenu-item  ">
                                     <a href="/riwayatPasien" class="submenu-link">Rekam Medis Pasien</a>
                                 </li>
+                                <li class="submenu-item  has-sub">
+                                    <a href="#" class="submenu-link">Parameter Dokter</a>
+                                    <ul class="submenu submenu-level-2 ">
+                                        <li class="submenu-item">
+                                            <a href="/dokter" class="submenu-link"> Dokter</a>
+                                        </li>
+                                        <li class="submenu-item">
+                                            <a href="/departemen" class="submenu-link"> Departemen</a>
+                                        </li>
+                                    </ul>
+
+                                </li>
                             </ul>
                         </li>
                         <li class="sidebar-item  has-sub">

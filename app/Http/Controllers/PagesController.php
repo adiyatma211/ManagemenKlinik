@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DepartemenModel;
+use App\Models\DokterModel;
 use App\Models\PasienModel;
+use App\Models\RekamPasienModel;
 
 class PagesController
 {
@@ -12,17 +15,28 @@ class PagesController
     }
     // =============================================== //
 
-
-    public function pasien(){
-        $ShowPatien = PasienModel::all();
-        return view('manageDokter.v_pasien', compact('ShowPatien'));
+    public function dokter(){
+        $ShowDoctor = DokterModel::all();
+        $showDepartemen = DepartemenModel::all();
+        return view('manageDokter.ParameterDokter.v_dokter', compact('ShowDoctor','showDepartemen'));
     }
+    public function departemen(){
 
+        $ShowDepartemen = DepartemenModel::all();
+        return view('manageDokter.parameterDokter.v_parameter', compact('ShowDepartemen'));
+    }
+    public function pasien(){
+        $departemenList = DepartemenModel::all();
+        $ShowPatien = PasienModel::with('dokter')->get();
+        return view('manageDokter.v_pasien', compact('ShowPatien','departemenList'));
+    }
 
     public function riwayatPasien(){
-
-        return view('manageDokter.v_rekampasien');
+        $ShowRekam = RekamPasienModel::all();
+        return view('manageDokter.v_rekampasien', compact('ShowRekam'));
 
     }
+
+
 
 }
