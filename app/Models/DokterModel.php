@@ -13,5 +13,10 @@ class DokterModel extends Model
         return $this->belongsTo(DepartemenModel::class, 'departemenId');
     }
 
+    public function jadwal()
+    {
+        return $this->belongsTo(Schadule::class, 'jadwalId');
+    }
+
 
 }

@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('master_rekam_pasiens', function (Blueprint $table) {
+        Schema::create('presensi_models', function (Blueprint $table) {
             $table->id();
-            $table->integer('rekamId');
-            $table->string('biaya');
-            $table->string('createdBy');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->timestamp('masuk')->nullable();
+            $table->timestamp('keluar')->nullable();
             $table->timestamps();
         });
     }
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('master_rekam_pasiens');
+        Schema::dropIfExists('presensi_models');
     }
 };

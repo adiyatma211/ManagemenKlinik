@@ -26,6 +26,7 @@
                                     <th>No</th>
                                     <th>Nama Departemen</th>
                                     <th>Keterangan</th>
+                                    <th>Biaya</th>
                                     <th>Ditambah Oleh</th>
                                     <th>Action</th>
                                 </tr>
@@ -36,10 +37,11 @@
                                         <td>{{ $key + 1 }}</td>
                                         <td>{{ $department->nama_departemen }}</td>
                                         <td>{{ $department->keterangan_departemen }}</td>
+                                        <td>{{ 'Rp ' . number_format($department->biaya, 0, ',', '.') }}</td>
                                         <td>{{ $department->createdBy }}</td>
                                         <td>
-                                            <button class="btn btn-info btn-sm"
-                                                onclick="openDepartmentModal('view', '{{ $department->id }}')">View</button>
+                                            {{-- <button class="btn btn-info btn-sm"
+                                                onclick="openDepartmentModal('view', '{{ $department->id }}')">View</button> --}}
                                             <button class="btn btn-primary btn-sm"
                                                 onclick="openDepartmentModal('edit', '{{ $department->id }}')">Edit</button>
                                             <button class="btn btn-danger btn-sm"
@@ -77,6 +79,11 @@
                         <div class="form-group">
                             <textarea id="keteranganDepartemen" name="keterangan_departemen" class="form-control" required></textarea>
                         </div>
+                        <label for="biaya">Biaya Departemen:</label>
+                        <div class="form-group">
+                            <input id="biaya" name="biaya" type="tel" class="form-control"
+                                oninput="formatBiayaInput()" required>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">Close</button>
@@ -106,30 +113,49 @@
             // Toggle read-only state for inputs based on action
             document.getElementById('namaDepartemen').readOnly = isView;
             document.getElementById('keteranganDepartemen').readOnly = isView;
+            document.getElementById('biaya').readOnly = isView;
 
             if (isEdit || isView) {
-                // Fetch department data for view or edit
-                fetch(`{{ route('edit.departemen', '') }}/${id}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            document.getElementById('namaDepartemen').value = data.department.nama_departemen;
-                            document.getElementById('keteranganDepartemen').value = data.department
-                                .keterangan_departemen;
-                        } else {
-                            Swal.fire('Error', data.message, 'error');
-                        }
-                    })
-                    .catch(error => Swal.fire('Error', 'An error occurred while fetching department data.', 'error'));
+    // Fetch department data for view or edit
+    fetch(`{{ route('edit.departemen', '') }}/${id}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Access data from the correct key 'dokter'
+                document.getElementById('namaDepartemen').value = data.dokter.nama_departemen;
+                document.getElementById('keteranganDepartemen').value = data.dokter.keterangan_departemen;
+                document.getElementById('biaya').value = formatRupiah(data.dokter.biaya); // Set the biaya value
             } else {
-                // Clear form for adding a new department
-                document.getElementById('formDepartemen').reset();
+                Swal.fire('Error', data.message, 'error');
             }
+        })
+        .catch(error => Swal.fire('Error', 'An error occurred while fetching department data.', 'error'));
+} else {
+    // Clear form for adding a new department
+    document.getElementById('formDepartemen').reset();
+}
+
+
 
             $('#departmentModal').modal('show');
         }
 
+
+        function formatBiayaInput() {
+            const biayaInput = document.getElementById('biaya');
+            const unformattedValue = biayaInput.value.replace(/\D/g, ''); // Remove non-numeric characters
+            biayaInput.value = formatRupiah(unformattedValue); // Display formatted value
+        }
+
+        function formatRupiah(value) {
+            // Format as "Rp xxx.xxx"
+            return value ? 'Rp ' + parseInt(value, 10).toLocaleString('id-ID') : '';
+        }
+
         function submitDepartmentForm() {
+            const biayaInput = document.getElementById('biaya');
+            const unformattedValue = biayaInput.value.replace(/\D/g, ''); // Get raw numeric value
+
             const url = currentDepartmentId ? `{{ route('update.departemen', '') }}/${currentDepartmentId}` :
                 `{{ route('store.departemen') }}`;
             const method = currentDepartmentId ? 'POST' : 'POST';
@@ -137,6 +163,7 @@
             const data = {
                 nama_departemen: document.getElementById('namaDepartemen').value,
                 keterangan_departemen: document.getElementById('keteranganDepartemen').value,
+                biaya: unformattedValue, // Use unformatted value for submission
                 _token: '{{ csrf_token() }}'
             };
 

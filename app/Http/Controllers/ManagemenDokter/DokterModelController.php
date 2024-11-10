@@ -6,7 +6,9 @@ use App\Models\DokterModel;
 use Illuminate\Http\Request;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class DokterModelController extends Controller
 {
@@ -29,25 +31,57 @@ class DokterModelController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-        try {
-            $dokter = new DokterModel();
-            $dokter->nama_dokter = $request->nama_dokter;
-            $dokter->jenis_kelamin = $request->jenis_kelamin;
-            $dokter->tanggal_masuk = $request->tanggal_masuk;
-            $dokter->departemenId = $request->departemenId;
-            $dokter->status = $request->status;
-            $dokter->createdBy = Auth::user()->name;
-            $dokter->save();
 
-            return response()->json(['success' => true,
-                'message' => 'Data Dokter berhasil diperbarui',
-                'data' => $dokter,]);
-        } catch (\Exception $e) {
-            return response()->json(['success' => false, 'message' => 'Error adding doctor.', 'error' => $e->getMessage()]);
-        }
-    }
+     public function store(Request $request)
+     {
+         try {
+             // Create new doctor entry
+             $dokter = new DokterModel();
+             $dokter->nama_dokter = $request->nama_dokter;
+             $dokter->jenis_kelamin = $request->jenis_kelamin;
+             $dokter->tanggal_masuk = $request->tanggal_masuk;
+             $dokter->departemenId = $request->departemenId;
+             $dokter->jadwalId = $request->jadwalId;
+             $dokter->status = $request->status;
+             $dokter->createdBy = Auth::user()->name;
+             $dokter->save();
+     
+             // Generate email and password for the user
+             $name = $request->nama_dokter;
+     
+             // Remove "dr" prefix if it exists
+             $nameWithoutPrefix = preg_replace('/^dr\s*/i', '', $name);
+             
+             // Get the first part of the name to create the email
+             $nameParts = explode(' ', $nameWithoutPrefix);
+             $firstName = strtolower($nameParts[0]); // Take the first name and make it lowercase
+             $email = $firstName . '@gmail.com';
+             $password = '12345678';
+     
+             // Create a new user entry in the User model
+             $user = new User();
+             $user->name = $request->nama_dokter;
+             $user->email = $email;
+             $user->password = Hash::make($password); // Hash the password
+             $user->role = 'dokter'; // Assign the role as "dokter"
+             $user->save();
+     
+             return response()->json([
+                 'success' => true,
+                 'message' => 'Data Dokter berhasil diperbarui',
+                 'data' => $dokter,
+                 'user' => $user
+             ]);
+         } catch (\Exception $e) {
+             return response()->json([
+                 'success' => false,
+                 'message' => 'Error adding doctor.',
+                 'error' => $e->getMessage()
+             ]);
+         }
+     }
+     
+
 
     /**
      * Display the specified resource.
@@ -82,11 +116,12 @@ class DokterModelController extends Controller
     {
         try {
             $dokter = DokterModel::findOrFail($id);
-            $dokter->nama = $request->nama_dokter;
+            $dokter->nama_dokter = $request->nama_dokter;
             $dokter->jenis_kelamin = $request->jenis_kelamin;
-            $dokter->tgl_masuk = $request->tanggal_masuk;
-            $dokter->departemen = $request->departemenId;
+            $dokter->tanggal_masuk = $request->tanggal_masuk;
+            $dokter->departemenId = $request->departemenId;
             $dokter->status = $request->status;
+            $dokter->jadwalId = $request->jadwalId;
             $dokter->createdBy = Auth::user()->name;
             $dokter->save();
 

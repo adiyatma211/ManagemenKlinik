@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\ManagemenDokter;
 
-use App\Http\Controllers\Controller;
-use App\Models\DepartemenModel;
 use App\Models\DokterModel;
 use Illuminate\Http\Request;
+use App\Models\DepartemenModel;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class DepartemenModelController extends Controller
 {
@@ -34,6 +36,8 @@ class DepartemenModelController extends Controller
             $departemen = new DepartemenModel();
             $departemen->nama_departemen = $request->nama_departemen;
             $departemen->keterangan_departemen = $request->keterangan_departemen;
+            $departemen->biaya = $request->biaya;
+            $departemen->createdBy = Auth::user()->name;
             $departemen->save();
 
             return response()->json([
@@ -63,21 +67,21 @@ class DepartemenModelController extends Controller
      * Show the form for editing the specified resource.
      */
     public function edit($id)
-{
-    $dokter = DokterModel::with('departemen')->find($id);
+    {
+        $dokter = DepartemenModel::findOrFail($id);
 
-    if ($dokter) {
-        return response()->json([
-            'success' => true,
-            'dokter' => $dokter
-        ]);
-    } else {
-        return response()->json([
-            'success' => false,
-            'message' => 'Dokter tidak ditemukan.'
-        ]);
+        if ($dokter) {
+            return response()->json([
+                'success' => true,
+                'dokter' => $dokter
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Dokter tidak ditemukan.'
+            ]);
+        }
     }
-}
 
 
     /**
@@ -89,6 +93,8 @@ class DepartemenModelController extends Controller
             $departemen = DepartemenModel::findOrFail($id);
             $departemen->nama_departemen = $request->nama_departemen;
             $departemen->keterangan_departemen = $request->keterangan_departemen;
+            $departemen->biaya = $request->biaya;
+            $departemen->createdBy = Auth::user()->name;
             $departemen->save();
 
             return response()->json([

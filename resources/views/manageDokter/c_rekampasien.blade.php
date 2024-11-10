@@ -37,29 +37,29 @@
                                     <div class="col-12">
                                         <div class="form-group mb-3">
                                             <label for="keluhan" class="form-label">Keluhan</label>
-                                            <textarea class="form-control" name="keluhan" id="keluhan" rows="4" required></textarea>
+                                            <textarea class="form-control" name="keluhan" id="keluhan" rows="4" required>{{ $patient->keluhan ?? '' }}</textarea>
                                         </div>
                                     </div>
                                     <div class="col-12">
                                         <div class="form-group mb-3">
                                             <label for="diagnosa" class="form-label">Diagnosa</label>
-                                            <textarea class="form-control" name="diagnoosa" id="diagnosa" rows="4" required></textarea>
+                                            <textarea class="form-control" name="diagnoosa" id="diagnosa" rows="4" required>{{ $patient->diagnoosa ?? '' }}</textarea>
                                         </div>
                                     </div>
                                     <div class="col-12">
                                         <div class="form-group mb-3">
                                             <label for="tindakan" class="form-label">Tindakan</label>
-                                            <textarea class="form-control" name="tindakan" id="tindakan" rows="4" required></textarea>
+                                            <textarea class="form-control" name="tindakan" id="tindakan" rows="4" required>{{ $patient->tindakan ?? '' }}</textarea>
                                         </div>
                                     </div>
                                     <div class="col-12">
                                         <div class="form-group mb-3">
                                             <label for="obat" class="form-label">Obat</label>
-                                            <textarea class="form-control" name="obat" id="obat" rows="4" required></textarea>
+                                            <textarea class="form-control" name="obat" id="obat" rows="4" required>{{ $patient->obat ?? '' }}</textarea>
                                         </div>
                                     </div>
                                     <div class="col-12 d-flex justify-content-end">
-                                        <button type="submit" class="btn btn-primary me-1 mb-1">Submit</button>
+                                        <button type="submit" class="btn btn-primary me-1 mb-1">Simpan</button>
                                         <button type="reset" class="btn btn-light-secondary me-1 mb-1">Reset</button>
                                     </div>
                                 </div>

@@ -15,14 +15,19 @@ class CheckRole
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
 
-    public function handle($request, Closure $next, $role)
-    {
-        // Check if the user has the required role
-        if (Auth::check() && Auth::user()->role === $role) {
-            return $next($request);
-        }
-
-        // If the user doesn't have the required role, abort with 403 Forbidden
-        abort(403, 'Unauthorized action.');
-    }
+     public function handle($request, Closure $next, ...$roles)
+     {
+         if (!Auth::check()) {
+             return redirect('login');
+         }
+ 
+         $user = Auth::user();
+ 
+         // Check if the user's role is in the allowed roles
+         if (!in_array($user->role, $roles)) {
+             return redirect('unauthorized'); // or any other page you want to redirect unauthorized users to
+         }
+ 
+         return $next($request);
+     }
 }

@@ -1,9 +1,11 @@
 <?php
 namespace App\Http\Controllers\ManagemenDokter;
 
-use App\Http\Controllers\Controller;
-use App\Models\RekamPasienModel;
 use Illuminate\Http\Request;
+use App\Models\RekamPasienModel;
+use App\Models\MasterRekamPasien;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class RekamPasienController extends Controller
 {
@@ -56,10 +58,41 @@ class RekamPasienController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function selesaiPasien($id, Request $request)
     {
-        //
+        try {
+            // Find the RekamPasienModel record by primary key id
+            $rekam = RekamPasienModel::findOrFail($id);
+            
+            $department = $rekam->dokter->departemen;
+            
+            // Calculate biaya
+            $base_fee = $department->biaya ?? 0;
+            $obat_fee = 100000;
+            $tindakan_fee = 100000;
+            $total_biaya = $base_fee + $obat_fee + $tindakan_fee;
+        
+            // Save data in MasterRekamPasien
+            $masterRekam = new MasterRekamPasien();
+            $masterRekam->rekamId = $rekam->id;
+            $masterRekam->biaya = $total_biaya;
+            $masterRekam->createdBy = Auth::user()->id;
+            $masterRekam->save();
+        
+            // Mark as completed in RekamPasienModel
+            $rekam->completed = true;
+            $rekam->save();
+        
+            return response()->json(['success' => true, 'message' => 'Data berhasil disimpan dan pasien ditandai selesai']);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal menyimpan data: ' . $e->getMessage(),
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
+
 
     /**
      * Show the form for editing the specified resource.

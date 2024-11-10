@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\DepartemenModel;
+use App\Models\Schadule;
 use App\Models\DokterModel;
 use App\Models\PasienModel;
+use App\Models\DepartemenModel;
+use App\Models\InventarisModel;
 use App\Models\RekamPasienModel;
+use App\Models\MasterRekamPasien;
 
 class PagesController
 {
@@ -18,7 +21,8 @@ class PagesController
     public function dokter(){
         $ShowDoctor = DokterModel::all();
         $showDepartemen = DepartemenModel::all();
-        return view('manageDokter.ParameterDokter.v_dokter', compact('ShowDoctor','showDepartemen'));
+        $schedule = Schadule::all();
+        return view('manageDokter.ParameterDokter.v_dokter', compact('ShowDoctor','showDepartemen','schedule'));
     }
     public function departemen(){
 
@@ -46,7 +50,48 @@ class PagesController
 
         return view('manageDokter.c_rekampasien');
     }
+    // Booking
+
+    
+    public function jadwalDokter(){
+        $departemenList = DepartemenModel::all();
+        $showDokter = DokterModel::all();
+        $schedules = Schadule::all();
+        // dd($schedules);
+        return view('manageBooking.v_jadwalDokter',compact('departemenList','showDokter','schedules'));
+    }
+
+    public function reservasiPasien(){
+        $ShowPatien = PasienModel::with('dokter')->get();
+        $departemenList = DepartemenModel::all();
+        $showDokter = DokterModel::all();
+        $schedules = Schadule::all();
+        // dd($schedules);
+        return view('manageBooking.v_reservasi',compact('departemenList','showDokter','schedules','ShowPatien'));
+    }
 
 
+    public function konfirmKehadiran(){
+        $ShowPatien = PasienModel::with('dokter')->get();
+        $departemenList = DepartemenModel::all();
+        $showDokter = DokterModel::all();
+        $schedules = Schadule::all();
+        return view('manageBooking.v_konfirmKehadiran',compact('departemenList','showDokter','schedules','ShowPatien'));
+    }
+
+    // Pasien
+    public function pasienNota(){
+        $showNota = MasterRekamPasien::all();
+        $ShowPatien = PasienModel::with('dokter')->get();
+        $departemenList = DepartemenModel::all();
+        $showDokter = DokterModel::all();
+        $schedules = Schadule::all();
+        return view('managemenPasien.v_nota',compact('departemenList','showDokter','schedules','ShowPatien','showNota'));
+    }
+
+    public function report(){
+        $inventaris = InventarisModel::all();
+        return view('manageInventaris.v_reportAlatMedis', compact('inventaris'));
+    }
 
 }

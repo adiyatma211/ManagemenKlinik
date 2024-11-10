@@ -15,5 +15,9 @@ class MasterRekamPasien extends Model
     public function pasien(){
         return $this->belongsTo(PasienModel::class,'pasienId');
     }
+
+    public function rekam(){
+        return $this->belongsTo(RekamPasienModel::class,'rekamId');
+    }
     
 }

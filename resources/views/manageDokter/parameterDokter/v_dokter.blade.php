@@ -28,6 +28,7 @@
                                     <th>Jenis Kelamin</th>
                                     <th>Departemen</th>
                                     <th>Tanggal Masuk</th>
+                                    <th>Jadwal Praktek</th>
                                     <th>Status</th>
                                     <th>Ditambah Oleh</th>
                                     <th>Action</th>
@@ -41,6 +42,7 @@
                                         <td>{{ $doctor->jenis_kelamin }}</td>
                                         <td>{{ $doctor->departemen->nama_departemen ?? 'N/A' }}</td>
                                         <td>{{ $doctor->tanggal_masuk }}</td>
+                                        <td>{{ $doctor->jadwal->day_range ?? 'N/A' }} {{ $doctor->jadwal->start_time ?? '' }} - {{ $doctor->jadwal->end_time ?? '' }}</td>
                                         <td>{{ $doctor->status }}</td>
                                         <td>{{ $doctor->createdBy }}</td>
                                         <td>
@@ -105,6 +107,18 @@
                                 @endforeach
                             </select>
                         </div>
+
+                        <!-- Jadwal Selection -->
+                        <label for="jadwalId">Jadwal Praktek:</label>
+                        <div class="form-group">
+                            <select class="form-select" id="jadwalId" name="jadwalId">
+                                @foreach ($schedule as $sched)
+                                    <option value="{{ $sched->id }}">{{ $sched->day_range }}  {{$sched->start_time}} - {{$sched->end_time}}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
                         <label for="status">Status:</label>
                         <div class="form-group">
                             <input id="status" name="status" type="text" class="form-control">
@@ -124,85 +138,86 @@
         let currentDoctorId = null;
 
         function openDoctorModal(action, id = null) {
-            const isEdit = action === 'edit';
-            const isView = action === 'view';
-            currentDoctorId = isEdit || isView ? id : null;
-
-            document.getElementById('doctorModalLabel').innerText = isEdit ? 'Edit Dokter' : (isView ? 'Detail Dokter' :
-                'Tambah Dokter');
-            document.getElementById('submitDoctorBtn').style.display = isView ? 'none' : 'block';
-
-            document.getElementById('namaDoctor').readOnly = isView;
-            document.getElementById('tgl_masuk').readOnly = isView;
-            document.getElementById('departemen').disabled = isView;
-            document.getElementById('status').readOnly = isView;
-
-            if (isEdit || isView) {
-                fetch(`{{ route('edit.dokter', '') }}/${id}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            document.getElementById('namaDoctor').value = data.dokter.nama_dokter;
-                            document.getElementById('tgl_masuk').value = data.dokter.tanggal_masuk;
-                            document.getElementById('departemen').value = data.dokter
-                                .departemenId; // gunakan ID departemen
-
-                            document.getElementById('status').value = data.dokter.status;
-
-                            if (data.dokter.jenis_kelamin === 'Laki-Laki') {
-                                document.getElementById('jkLaki').checked = true;
-                            } else if (data.dokter.jenis_kelamin === 'Perempuan') {
-                                document.getElementById('jkPerempuan').checked = true;
-                            }
-                        } else {
-                            Swal.fire('Error', data.message, 'error');
-                        }
-                    })
-                    .catch(error => Swal.fire('Error', 'An error occurred while fetching doctor data.', 'error'));
-            } else {
-                document.getElementById('formDoctor').reset();
-            }
-
-            $('#doctorModal').modal('show');
-        }
-
-
-        function submitDoctorForm() {
-            const url = currentDoctorId ? `{{ route('update.dokter', '') }}/${currentDoctorId}` :
-                `{{ route('store.dokter') }}`;
-            const method = currentDoctorId ? 'PUT' : 'POST';
-
-            const data = {
-                nama_dokter: document.getElementById('namaDoctor').value,
-                jenis_kelamin: document.querySelector('input[name="jenis_kelamin"]:checked').value,
-                tanggal_masuk: document.getElementById('tgl_masuk').value,
-                departemenId: document.getElementById('departemen').value,
-                status: document.getElementById('status').value,
-                _token: '{{ csrf_token() }}'
-            };
-
-
-            fetch(url, {
-                    method: method,
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(data)
-                })
+        const isEdit = action === 'edit';
+        const isView = action === 'view';
+        currentDoctorId = isEdit || isView ? id : null;
+            
+        document.getElementById('doctorModalLabel').innerText = isEdit ? 'Edit Dokter' : (isView ? 'Detail Dokter' : 'Tambah Dokter');
+        document.getElementById('submitDoctorBtn').style.display = isView ? 'none' : 'block';
+            
+        document.getElementById('namaDoctor').readOnly = isView;
+        document.getElementById('tgl_masuk').readOnly = isView;
+        document.getElementById('departemen').disabled = isView;
+        document.getElementById('jadwalId').disabled = isView;
+        document.getElementById('status').readOnly = isView;
+            
+        if (isEdit || isView) {
+            fetch(`{{ route('edit.dokter', '') }}/${id}`)
                 .then(response => response.json())
                 .then(result => {
-                    $('#doctorModal').modal('hide');
-                    Swal.fire({
-                        icon: result.success ? 'success' : 'error',
-                        title: result.success ? 'Data Saved!' : 'Save Failed',
-                        text: result.message,
-                        timer: 2000,
-                        showConfirmButton: false
-                    });
-                    if (result.success) setTimeout(() => location.reload(), 2000);
+                    if (result.success && result.data) {
+                        const dokter = result.data; // Access the doctor data from result.data
+                        document.getElementById('namaDoctor').value = dokter.nama_dokter ?? '';
+                        document.getElementById('tgl_masuk').value = dokter.tanggal_masuk ?? '';
+                        document.getElementById('departemen').value = dokter.departemenId ?? '';
+                        document.getElementById('jadwalId').value = dokter.jadwalId ?? '';
+                        document.getElementById('status').value = dokter.status ?? '';
+                    
+                        if (dokter.jenis_kelamin === 'Laki-Laki') {
+                            document.getElementById('jkLaki').checked = true;
+                        } else if (dokter.jenis_kelamin === 'Perempuan') {
+                            document.getElementById('jkPerempuan').checked = true;
+                        }
+                    } else {
+                        Swal.fire('Error', result.message || 'Data not found', 'error');
+                    }
                 })
-                .catch(error => Swal.fire('Error', 'An error occurred while saving doctor data.', 'error'));
+                .catch(error => Swal.fire('Error', 'An error occurred while fetching doctor data.', 'error'));
+        } else {
+            document.getElementById('formDoctor').reset();
         }
+    
+        $('#doctorModal').modal('show');
+    }
+
+
+
+    function submitDoctorForm() {
+    const url = currentDoctorId ? `{{ route('update.dokter', '') }}/${currentDoctorId}` : `{{ route('store.dokter') }}`;
+    const method = currentDoctorId ? 'POST' : 'POST';
+
+    const data = {
+        nama_dokter: document.getElementById('namaDoctor').value,  // Change to 'nama_dokter'
+        jenis_kelamin: document.querySelector('input[name="jenis_kelamin"]:checked').value,
+        tanggal_masuk: document.getElementById('tgl_masuk').value,
+        departemenId: document.getElementById('departemen').value,
+        jadwalId: document.getElementById('jadwalId').value,
+        status: document.getElementById('status').value,
+        _token: '{{ csrf_token() }}'
+    };
+
+    fetch(url, {
+            method: method,
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(result => {
+            $('#doctorModal').modal('hide');
+            Swal.fire({
+                icon: result.success ? 'success' : 'error',
+                title: result.success ? 'Data Saved!' : 'Save Failed',
+                text: result.message,
+                timer: 2000,
+                showConfirmButton: false
+            });
+            if (result.success) setTimeout(() => location.reload(), 2000);
+        })
+        .catch(error => Swal.fire('Error', 'An error occurred while saving doctor data.', 'error'));
+}
+
 
         function deleteDoctor(id) {
             Swal.fire({
@@ -233,8 +248,7 @@
                             });
                             if (result.success) setTimeout(() => location.reload(), 2000);
                         })
-                        .catch(error => Swal.fire('Error', 'An error occurred while deleting the doctor.',
-                            'error'));
+                        .catch(error => Swal.fire('Error', 'An error occurred while deleting the doctor.', 'error'));
                 }
             });
         }
