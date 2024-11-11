@@ -1,0 +1,181 @@
+@use '../../utils' as *;
+
+.banner-5 {
+    overflow: hidden;
+
+    .container {
+        position: relative;
+    }
+
+    .left-shape {
+        position: absolute;
+        left: -300px;
+        bottom: -150px;
+        animation: downUp  ease-in-out 1s forwards infinite alternate;
+
+        @media #{$lg, $md, $sm, $xs} {
+            display: none;
+        }
+    }
+
+    &__space {
+        padding-top: 177px;
+        padding-bottom: 186px;
+
+        @media #{$lg} {
+            padding-bottom: 230px;
+        }
+        @media #{$md} {
+            padding-bottom: 130px;
+        }
+        @media #{$sm, $xs} {
+            padding-bottom: 360px;
+        }
+        @media #{$xs} {
+            padding-top: 150px;
+        }
+    }
+
+    &__content {
+        max-width: 503px;
+        padding-top: 115px;
+
+        @media #{$lg, $md, $sm, $xs} {
+            max-width: 100%;
+        }
+        @media #{$md, $sm, $xs} {
+            padding-top: 0;
+        }
+
+        h1 {
+            font-size: 72px;
+            line-height: 84px;
+            font-weight: var(--rr-fw-normal);
+            color: var(--rr-theme-black);
+            text-transform: capitalize;
+
+            @media #{$lg} {
+                font-size: 60px;
+                line-height:64px;
+            }
+            @media #{$md} {
+                font-size: 50px;
+                line-height:52px;
+            }
+            @media #{$sm} {
+                font-size: 38px;
+                line-height:50px;
+            }
+            @media #{$xs} {
+                font-size: 32px;
+                line-height:44px;
+            }
+        }
+
+        p {
+            color: var(--rr-theme-black);
+            font-weight: var(--rr-fw-medium);
+        }
+    }
+
+    &__btn-box {
+        display: flex;
+        gap: 20px 38px;
+        flex-wrap: wrap;
+        align-items: center;
+        .rr-btn__border {
+            padding: 20px 29px;
+            border: 2px solid var(--rr-theme-black);
+        }
+
+        &-wrapper {
+            gap: 13px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            i {
+                width: 50px;
+                height: 50px;
+                background-color: #0E3311;
+                @include border-radius(500px);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: var(--rr-common-white);
+            }
+
+            &-text {
+                h5 {
+                    a {
+                        color: var(--rr-theme-black);
+                        font-weight: var(--rr-fw-bold);
+                        &:hover {
+                            color: var(--rr-theme-green);
+                        }
+                    }
+
+                }
+            }
+        }
+    }
+
+    &__media {
+        position: relative;
+        @media #{$md, $sm, $xs} {
+            margin-top: 60px;
+        }
+        img {
+            max-width: 100%;
+            object-fit: cover;
+            @include border-radius(20px);
+        }
+
+        .image-1 {
+            right: 0;
+            top: 343px;
+            position: absolute;
+            overflow: hidden;
+
+            @media #{$md, $sm, $xs} {
+                top: 100px;
+            }
+            @media #{$sm, $xs} {
+                top: 343px;
+                right: 0;
+            }
+        }
+
+        .image-2 {
+            overflow: hidden;
+            display: inline-block;
+        }
+
+        &-shape {
+
+            @media #{$lg, $md, $sm, $xs} {
+                display: none;
+            }
+            .img-1 {
+                position: absolute;
+                top: 453px;
+                left: -30px;
+                animation: rrswing 3s ease-in-out 1s forwards infinite alternate;
+                transform-origin: bottom right;
+            }
+            .img-2 {
+                position: absolute;
+                right: 55px;
+                top: 0;
+                animation: upDown ease-in-out 1s forwards infinite alternate;
+                transform-origin: bottom right;
+            }
+            .img-3 {
+                position: absolute;
+                top: 238px;
+                right: -114px;
+                animation: rrswing 3s ease-in-out 1s forwards infinite alternate;
+                transform-origin: bottom right;
+            }
+        }
+    }
+}

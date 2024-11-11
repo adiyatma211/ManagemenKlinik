@@ -1,0 +1,49 @@
+@use '../../utils' as *;
+
+.happy-customer {
+    background-color: var(--rr-theme-green);
+    padding: 67px 0;
+
+    @media #{$sm,$xs} {
+      padding: 50px 0; 
+    }
+
+  &__item-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    column-gap: 30px;
+    row-gap: 30px;
+
+    @media #{$lg, $md, $sm, $xs} {
+      justify-content: flex-start;
+    }
+  }
+
+  &__item {
+    &-content {
+      gap: 20px;
+      display: flex;
+      align-items: center;
+
+      &-text {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        h2 {
+          font-weight: var(--rr-fw-medium);
+          color: var(--rr-common-white);
+          .odometer {
+            font-family: var(--rr-ff-heading);
+          }
+        }
+
+        h6 {
+          font-weight: 300;
+          color: var(--rr-common-white);
+        }
+      }
+    }
+  }
+}

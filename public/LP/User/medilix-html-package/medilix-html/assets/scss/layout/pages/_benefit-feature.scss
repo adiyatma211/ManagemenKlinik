@@ -1,0 +1,63 @@
+@use '../../utils' as *;
+
+.benefit-feature {
+
+
+    .section {
+        &__title-wrapper {
+            max-width: 770px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        &__title {
+            font-weight: var(--rr-fw-medium);
+            color: var(--rr-theme-black)
+        }
+    }
+    .mb-minus-40 {
+        margin-bottom: -40px;
+    }
+
+
+    &__item {
+        gap: 30px;
+        display: flex;
+        align-items: center;
+        margin-bottom: 40px;
+
+        @media #{$xs} {
+            align-items: self-start;
+            gap: 14px;
+        }
+
+        &-icon {
+            width: 80px;
+            height: 80px;
+            min-width: 80px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #E5F9ED;
+            @include border-radius(500px);
+        }
+
+        &-text {
+            max-width: 240px;
+
+            @media #{$lg, $md, $sm, $xs} {
+                max-width: 100%;
+            }
+            h5 {
+                margin-bottom: 8px;
+                a {
+                    color: var(--rr-theme-black);
+
+                    &:hover {
+                        color: var(--rr-theme-green);
+                    }
+                }
+            }
+        }
+    }
+}

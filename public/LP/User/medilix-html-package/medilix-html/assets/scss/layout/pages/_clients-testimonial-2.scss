@@ -1,0 +1,99 @@
+@use '../../utils' as *;
+
+.clients-testimonial-2 {
+
+    .swiper {
+        overflow: visible;
+    }
+
+    &__slider__arrow {
+        gap: 20px;
+
+        &-prev, &-next {
+            width: 60px;
+            height: 60px;
+            background-color: rgb(22 144 145 / 10%);
+            @include border-radius(500px);
+            color: var(--rr-theme-glow);
+            
+            &:hover {
+                background-color: var(--rr-theme-glow);
+                color: var(--rr-common-white);
+            }
+        }
+    }
+
+
+    &__item {
+        position: relative;
+        @include border-radius(20px);
+        border-top: 3px solid var(--rr-theme-glow);
+        background-color: var(--rr-common-white);
+        padding-top: 73px;
+        padding-left: 60px;
+        padding-bottom: 40px;
+        padding-right: 60px;
+
+        @media #{$lg} {
+            padding-top: 60px;
+            padding-left: 50px;
+            padding-bottom: 40px;
+            padding-right: 50px;
+        }
+        @media #{$md, $sm, $xs} {
+            padding-top: 60px;
+            padding-left: 30px;
+            padding-bottom: 30px;
+            padding-right: 30px;
+        }
+
+
+        &-media {
+            position: absolute;
+            top: -41px;
+            left: 60px;
+        }
+
+        &-content {
+            p {
+                font-size: 28px;
+                line-height: 40px;
+                margin-bottom: 41px;
+
+                @media #{$lg} {
+                    font-size: 25px;
+                    line-height: 38px;
+                }
+
+                @media #{$md, $sm, $xs} {
+                    font-size: 21px;
+                    line-height: 35px;
+                    margin-bottom: 30px;
+                }
+            }
+        }
+    }
+
+    &__icon {
+        position: absolute;
+        right: 25px;
+        top: 120px;
+        opacity: 5%;
+    }
+
+    &__author {
+
+        h4 {
+            margin-bottom: 8px;
+
+            a {
+                color: var(--rr-theme-black);
+
+                &:hover {
+                    color: var(--rr-theme-glow);
+                }
+            }
+        }
+    }
+}
+

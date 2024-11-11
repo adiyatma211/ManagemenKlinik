@@ -1,0 +1,99 @@
+@use '../../utils' as *;
+
+/*----------------------------------------*/
+/*  7.1 cta
+/*----------------------------------------*/
+.cta-3 {
+
+    &__space-top {
+        padding-top: 180px;
+
+        @media #{$md} {
+            padding-top: 100px;
+        }
+        @media #{$sm,$xs} {
+            padding-top: 70px;
+        }
+    }
+
+    &__shape {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+
+        @media #{$md, $sm, $xs} {
+            display: none;
+        }
+    }
+    
+    
+    &__wrapper {
+        gap: 86px;
+        display: flex;
+        align-items: center;
+        position: relative;
+        @include border-radius(20px);
+        background-color: var(--rr-theme-glow);
+
+        @media #{$xl, $lg, $md, $sm, $xs} {
+            gap: 20px;
+        }
+        @media #{$md, $sm, $xs} {
+            flex-direction: column-reverse;
+            overflow: hidden;
+        }
+    }
+
+    &__media {
+        margin-left: 50px;
+        margin-top: -61px;
+        position: relative;
+        z-index: 1;
+
+        @media #{$md, $sm, $xs} {
+            margin-top: 0;
+            margin-left: 0;
+        }
+
+        img {
+            @media #{$md, $sm, $xs} {
+                max-width: 300px;
+                margin-bottom: -150px;
+            }
+        }
+    }
+
+    &__content {
+        z-index: 1;
+        position: relative;
+        max-width: 650px;
+
+        @media #{$xl, $lg, $md, $sm, $xs} {
+           padding: 10px;
+        }
+        @media #{$md, $sm, $xs} {
+           padding: 30px 10px;
+           text-align: center;
+        }
+
+        h2 {
+            margin-bottom: 30px;
+            color: var(--rr-common-white);
+            font-weight: var(--rr-fw-ebold);
+            text-transform: capitalize;
+        }
+
+        .rr-btn {
+            background-color: var(--rr-common-white);
+            .btn-wrap {
+                span {
+                    color: var(--rr-theme-black);
+                    font-weight: var(--rr-fw-sbold);
+                }
+                i {
+                    padding-left: 10px;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,149 @@
+@use '../../utils' as *;
+
+.our-portfolio-2 {
+    overflow: hidden;
+
+    .section {
+        &__title {
+            font-weight: var(--rr-fw-medium);
+            color: var(--rr-theme-black);
+            text-transform: capitalize;
+        }
+    }
+    
+    .rr-btn {
+        padding: 22px 31px;
+        background-color: var(--rr-theme-glow);
+        .btn-wrap {
+
+            span {
+                i {
+                    padding-left: 10px;
+                }
+            }
+        }
+    }
+    &__item {
+        @extend %rr-transition-3;
+        &__content {
+            position: relative;
+
+            &-media {
+                overflow: hidden;
+                @extend %rr-transition-3;
+                
+                img {
+                    @include border-radius(20px);
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                }
+            }
+
+        }
+        &__wrapper {
+            left: calc(50% - 0px);
+            bottom: 30px;
+            padding: 20px;
+            padding-left: 30px;
+            padding-right: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            z-index: -1;
+            visibility: hidden;
+            position: absolute;
+            @extend %rr-transition-3;
+            width: calc(100% - 60px);
+            @include border-radius(20px);
+            transform: translate(-50%, 30px);
+            background-color: var(--rr-common-white);
+
+            h4 {
+                a {
+                    color: var(--rr-theme-black);
+
+                    @media #{$xs} {
+                        font-size: 18px;
+                    }
+
+                    &:hover {
+                        color: var(--rr-theme-glow);
+                    }
+                }
+            }
+            p {
+                margin-bottom: 7px;
+            }
+        }
+
+        &__icon {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background-color: var(--rr-theme-glow);
+            @include border-radius(30px);
+            color: var(--rr-common-white);
+
+            &:hover {
+                i {
+                    color: var(--rr-common-white);
+                }
+            }
+        }
+
+        &:hover {
+            .our-portfolio-2__item {
+                &__wrapper {
+                    z-index: 1;
+                    visibility: visible;
+                    transform: translate(-50%, 0px);
+                }
+
+                &-icon {
+                    opacity: 1;
+                }
+
+                &::before {
+                    z-index: 1;
+                    visibility: visible;
+                    transform: scale(100%);
+                }
+
+                &-media {
+
+                    img {
+
+                        transform: scale(1.1);
+                    }
+                }
+            }
+        }
+    }
+
+    .swiper {
+        overflow: visible;
+    }
+
+
+    &__scrollbar {
+        margin-left: auto;
+        margin-right: auto;
+        opacity: 1 !important;
+        background: var(--rr-common-white);
+        width: 300px;
+        height: 10px;
+        background: var(--rr-common-white);
+        border-radius: 5px;
+        max-width: 100%;
+    
+    
+        .swiper-scrollbar-drag {
+          height: 100%;
+          background: var(--rr-theme-glow);
+        }
+      }
+}

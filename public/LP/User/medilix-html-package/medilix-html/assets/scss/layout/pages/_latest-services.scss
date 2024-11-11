@@ -1,0 +1,91 @@
+@use '../../utils' as *;
+
+.latest {
+
+    .section {
+        &__title-wrapper {
+            max-width: 650px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        &__title {
+            font-weight: var(--rr-fw-medium);
+            color: var(--rr-theme-black)
+        }
+    }
+
+    &__item {
+        @include border-radius(20px);
+        border: 1px solid #E4E5E5;
+        overflow: hidden;
+        border-top: none;
+        position: relative;
+        
+        &-media {
+            overflow: hidden;
+            img {
+                object-fit: cover;
+                width: 100%;
+                height: 100%;
+            }
+        }
+        
+        &-content {
+            padding: 30px;
+
+            p {
+                margin-bottom: 40px;
+            }
+
+            h4 {
+                a {
+                    color: var(--rr-theme-black);
+                
+                    &:hover {
+                        color: var(--rr-theme-green);
+                    }
+                }
+            }
+
+            .rr-btn {
+                border: 2px solid var(--rr-theme-black);
+                padding: 21px 30px;
+
+                &:hover {
+                    background: var(--rr-theme-green);
+                    border-color: transparent;
+                    .btn-wrap {
+                        span {
+                            color: white;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    &__shape {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+    }
+
+  &__scrollbar {
+    margin-left: auto;
+    margin-right: auto;
+    opacity: 1 !important;
+    background: #E5F9ED;
+    width: 300px;
+    height: 10px;
+    background: #E5F9ED;
+    border-radius: 5px;
+    max-width: 100%;
+
+
+    .swiper-scrollbar-drag {
+      height: 100%;
+      background: #0E3311;
+    }
+  }
+}

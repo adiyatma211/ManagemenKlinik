@@ -1,0 +1,138 @@
+@use '../../utils' as *;
+
+.psychology {
+    z-index: 9;
+    position: relative;
+
+    &__top-space {
+        margin-top: -120px;
+
+        @media #{$xs} {
+            margin-top: 50px;
+        }
+    }
+
+    &__item {
+        padding: 40px;
+        background-color: var(--rr-common-white);
+        @include border-radius(20px);
+        height: 299px;
+        display: flex;
+        flex-direction: column;
+        
+        @media #{$lg, $md, $sm , $xs} {
+            margin-bottom: 30px;
+            
+        }
+        @media #{$md, $sm , $xs} {
+            height: inherit;
+        }
+
+        @media #{$xs} {
+            padding: 20px;
+        }
+
+        p {
+            @media #{$md, $sm , $xs} {
+                margin-bottom: 30px !important;
+            }
+        }
+    }
+
+    &__wrapper {
+        display: flex;
+        align-items: center;
+        gap: 25px;
+        margin-bottom: 27px;
+
+        @media #{$xs} {
+            gap: 10px;
+        }
+
+        h4 {
+            color: var(--rr-theme-black);
+
+            @media #{$xs} {
+                font-size: 18px;
+            }
+        }
+    }
+
+    &__socail {
+        gap: 25px;
+        display: flex;
+        margin-top: auto;
+        align-items: center;
+
+        a {
+            font-size: 16px;
+            color: var(--rr-theme-black);
+
+            &:hover {
+                color: var(--rr-theme-glow);
+
+                svg path[fill="#071C3C"] {
+                    fill: var(--rr-theme-glow);
+                  }
+            }
+        }
+    }
+
+    &-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+        margin-top: auto;
+
+        i {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            font-size: 19px;
+            align-items: center;
+            justify-content: center;
+            @include border-radius(500px);
+            color: var(--rr-common-white);
+            background-color: var(--rr-theme-glow);
+        }
+
+        &-text {
+            span {
+                display: block;
+                margin-bottom: 0;
+                color: var(--rr-theme-black);
+            }
+
+            a {
+                color: var(--rr-theme-black);
+
+                &:hover {
+                    color: var(--rr-theme-glow);
+                }
+            }
+        }
+    }
+
+    &__location {
+        display: flex;
+        gap: 17px;
+        margin-top: auto;
+
+        i {
+            font-size: 24px;
+            margin-top: 6px;
+            color: var(--rr-theme-black);
+        }
+
+        a {
+            color: var(--rr-theme-black);
+
+            @media #{$xs} {
+                font-size: 16px;
+            }
+            &:hover {
+                color: var(--rr-theme-glow);
+            }
+        }
+    }
+}

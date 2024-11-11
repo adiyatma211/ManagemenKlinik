@@ -1,0 +1,103 @@
+@use '../../utils' as *;
+
+.specialist-doctor-2 {
+  
+    .section {
+        
+        &__title-wrapper {
+            max-width: 595px;
+            margin-right: auto;
+            margin-left: auto;
+            text-align: center;
+        }
+    }
+
+  &__item {
+
+    @media #{$lg, $md, $sm, $xs} {
+      margin-bottom: 30px;
+    }
+
+    &-media {
+        display: flex;
+        height: 500px;
+        overflow: hidden;
+        position: relative;
+        align-items: center;
+        justify-content: center;
+        @include border-radius(20px);
+        border: 2px solid #E4E5E5;
+        background: var(--rr-common-white);
+        img {
+            height: 100%;
+            object-fit: cover;
+        }
+      
+        @media #{$xl, $lg, $md, $sm, $xs} {
+            height: auto;
+        }
+    }
+
+    &-content {
+
+      &-text {
+        overflow: hidden;
+        
+        margin-top: 22px;
+        h4 {
+            a {
+                color: var(--rr-theme-black);
+
+                &:hover {
+                    color: var(--rr-theme-glow);
+                }
+            }
+        }
+        
+      }
+
+      &-share {
+        padding: 16px 41px;
+        gap: 21px;
+        z-index: 99;
+        opacity: 0;
+        bottom: -16px;
+        left: 50%;
+        display: flex;
+        list-style: none;
+        position: absolute;
+        text-align: center;
+        justify-content: center;
+        @include border-radius(20px);
+        @include transform(translateX(-50%));
+        background-color: var(--rr-common-white);
+        transition: all 0.4s ease-in-out;
+
+        a {
+          i {
+            color: var(--rr-color-900);
+            font-size: 18px;
+          }
+
+          &:hover {
+            i {
+              color: var(--rr-theme-glow);
+            }
+            svg path {
+              fill: var(--rr-theme-glow);
+            }
+          }
+        }
+      }
+    }
+
+    &:hover {
+
+      .specialist-doctor-2__item-content-share {
+        visibility: visible;
+        opacity: 1;
+        bottom: 146px;
+      }
+    }
+  }
+}

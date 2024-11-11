@@ -109,6 +109,14 @@ Route::middleware(['auth', CheckRole::class . ':admin'])->group(function () {
 });
 
 Route::get('/rekam', [PagesController::class, 'pasienNota'])->name('pasien.nota');
-    
+
+
+
+// Landing Page
+
+Route::get('/index', [PagesController::class, 'pasienLanding']);
+Route::get('/checkNoRm/{no_rm}', [PagesController::class, 'checkNoRm'])->name('appointment.checkNoRm');
+Route::post('/daftarPasien', [PasienModelController::class, 'store'])->name('simpan.pasien');
+
 
 require __DIR__.'/auth.php';
