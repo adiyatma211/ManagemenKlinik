@@ -7,18 +7,14 @@ use App\Http\Controllers\ManagemenDokter\DokterModelController;
 use App\Http\Controllers\ManagemenDokter\PasienModelController;
 use App\Http\Controllers\ManagemenDokter\RekamPasienController;
 use App\Http\Controllers\PagesController;
+use App\Http\Controllers\PasienUserController;
 use App\Http\Controllers\PresensiModelController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserLandingPageController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\CheckRole;
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
-// Route::get('/dashboard', function () {
-//     return view('dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -28,7 +24,7 @@ Route::middleware('auth')->group(function () {
 
 
 //Dashborad
-Route::middleware(['auth', CheckRole::class . ':admin,dokter'])->group(function () {
+Route::middleware(['auth', CheckRole::class . ':admin,dokter,suster'])->group(function () {
     Route::get('/dashboard', [PagesController::class,'base'])->name('dashboard');
 });
 
@@ -48,7 +44,7 @@ Route::middleware(['auth', CheckRole::class . ':admin'])->group(function () {
 
 // Parameter Dokter -Departemen dan Admin
 
-Route::middleware(['auth', CheckRole::class . ':dokter,admin'])->group(function () {
+Route::middleware(['auth', CheckRole::class . ':dokter,admin,suster'])->group(function () {
     Route::get('/departemen', [PagesController::class, 'departemen'])->name('view.departemen');
     Route::post('/departemen/tambah', [DepartemenModelController::class, 'store'])->name('store.departemen');
     Route::get('/departemen/edit/{id}', [DepartemenModelController::class, 'edit'])->name('edit.departemen');
@@ -57,7 +53,7 @@ Route::middleware(['auth', CheckRole::class . ':dokter,admin'])->group(function 
 });
 
 // Managemen Pasien  -Dokter
-Route::middleware(['auth', CheckRole::class . ':dokter,admin'])->group(function () {
+Route::middleware(['auth', CheckRole::class . ':dokter,admin,suster'])->group(function () {
     Route::get('/dokter',[PagesController::class,'dokter'])->name('view.dokter');
     Route::post('/dokter/tambah',[DokterModelController::class,'store'])->name('store.dokter');
     Route::get('/dokter/edit/{id}',[DokterModelController::class,'edit'])->name('edit.dokter');
@@ -75,11 +71,12 @@ Route::middleware(['auth', CheckRole::class . ':dokter,admin'])->group(function 
     Route::get('/riwayatPasien/{id}/edit', [RekamPasienController::class, 'edit'])->name('patients.edit');
     Route::post('/riwayatPasien/{id}', [RekamPasienController::class, 'update'])->name('patients.update');
     Route::delete('/riwayatPasien/{id}', [RekamPasienController::class, 'destroy'])->name('patients.destroy');
+    Route::get('/historypasien', [PagesController::class, 'historyPasienUser']);
 });
 
 
 // Managemen Booking
-Route::middleware(['auth', CheckRole::class . ':dokter,admin'])->group(function () {
+Route::middleware(['auth', CheckRole::class . ':dokter,admin,suster'])->group(function () {
     Route::get('/jadwalDokter',[PagesController::class,'jadwalDokter'])->name('view.jadwal');
     Route::get('/reservasiPasien',[PagesController::class,'reservasiPasien'])->name('view.reservasi');
     Route::get('/reservasiPasien/tambah/{no_rm}',[ReservasiController::class,'getPatientByNoRm'])->name('get.reservasi');
@@ -88,18 +85,18 @@ Route::middleware(['auth', CheckRole::class . ':dokter,admin'])->group(function 
     Route::delete('/reservasi/{no_rm}', [ReservasiController::class, 'destroy'])->name('reservasi.delete');
 });
 // Konfirmasi Kehadiran
-Route::middleware(['auth', CheckRole::class . ':dokter,admin'])->group(function () {
+Route::middleware(['auth', CheckRole::class . ':dokter,admin,suster'])->group(function () {
     Route::get('/konfirm', [PagesController::class, 'konfirmKehadiran'])->name('konfirmasi.kehadiran');
     Route::post('/konfirm/kehadiran/{no_rm}', [ReservasiController::class, 'konfirmasi'])->name('konfirmasi.kehadiran');
 });
 
 // In your web.php file
-Route::middleware(['auth', CheckRole::class . ':dokter,admin'])->group(function () {
+Route::middleware(['auth', CheckRole::class . ':dokter,admin,suster'])->group(function () {
 Route::post('/presensi/masuk', [PresensiModelController::class, 'masuk'])->name('presensi.masuk');
 Route::post('/presensi/keluar', [PresensiModelController::class, 'keluar'])->name('presensi.keluar');
 Route::get('/presensi', [PresensiModelController::class, 'index'])->name('presensi.index');
 });
-Route::middleware(['auth', CheckRole::class . ':admin'])->group(function () {
+Route::middleware(['auth', CheckRole::class . ':admin,dokter,suster'])->group(function () {
     Route::get('/reportInventaris', [InventarisModelController::class, 'menu'])->name('inventaris.index');
     Route::get('/getInventoryItems', [InventarisModelController::class, 'getInventoryItems'])->name('inventaris.getItems');
     Route::get('/getInventoryItem/{id}', [InventarisModelController::class, 'getInventoryItem'])->name('inventaris.getItem');
@@ -114,9 +111,17 @@ Route::get('/rekam', [PagesController::class, 'pasienNota'])->name('pasien.nota'
 
 // Landing Page
 
-Route::get('/index', [PagesController::class, 'pasienLanding']);
-Route::get('/checkNoRm/{no_rm}', [PagesController::class, 'checkNoRm'])->name('appointment.checkNoRm');
-Route::post('/daftarPasien', [PasienModelController::class, 'store'])->name('simpan.pasien');
+
 
 
 require __DIR__.'/auth.php';
+
+Route::get('/', [UserLandingPageController::class, 'UserHome'])->name('pasien.home');
+Route::get('/index/{departemenId}', [UserLandingPageController::class, 'getDoctorsByDepartmentUser']);
+Route::get('/index/dataPasien/{no_rm}', [UserLandingPageController::class, 'edit']);
+Route::post('/index/dataPasien/update/{no_rm}', [UserLandingPageController::class, 'update']);
+Route::post('/index/dataPasien/store', [UserLandingPageController::class, 'store']);
+Route::post('/index/testimoni/store', [UserLandingPageController::class, 'storeTestimoni']);
+Route::get('/index/testimoni/getall', [UserLandingPageController::class, 'getAll']);
+
+

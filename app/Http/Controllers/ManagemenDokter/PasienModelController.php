@@ -5,6 +5,7 @@ use App\Models\DokterModel;
 use App\Models\PasienModel;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\HistoryPasienPeriksa;
 use Illuminate\Support\Facades\Auth;
 
 class PasienModelController extends Controller
@@ -31,6 +32,7 @@ class PasienModelController extends Controller
     public function store(Request $request)
     {
         try {
+            // Buat data pasien baru
             $patient = PasienModel::create([
                 'nama_pasien' => $request->nama_pasien,
                 'alamat' => $request->alamat_pasien,
@@ -40,17 +42,26 @@ class PasienModelController extends Controller
                 'umur' => $request->umur,
                 'tgl_masuk' => $request->tgl_masuk,
                 'tgl_periksa' => $request->tgl_periksa,
-                'departemen' => $request->departemen, // Menggunakan `departemen`
-                'daftarDokterId' => $request->daftarDokterId, // Menggunakan `daftarDokterId`
+                'departemen' => $request->departemen,
+                'daftarDokterId' => $request->daftarDokterId,
                 'createdBy' => Auth::user()->name,
             ]);
-
+        
+            // Masukkan data ke tabel HistoryPasienPeriksa
+            HistoryPasienPeriksa::create([
+                'no_rm' => $patient->no_rm,
+                'tanggal_periksa' => $request->tgl_periksa,
+                'departemen' => $request->departemen,
+                'dokter_id' => $request->daftarDokterId,
+                'catatan' => $request->catatan ?? null,
+            ]);
+        
             return response()->json([
                 'success' => true,
-                'message' => 'Data pasien berhasil disimpan',
+                'message' => 'Data pasien berhasil disimpan dan riwayat pemeriksaan dicatat.',
                 'data' => $patient,
             ]);
-
+        
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
@@ -92,6 +103,7 @@ class PasienModelController extends Controller
     /**
      * Update the specified resource in storage.
      */
+    
     public function update(Request $request, $no_rm)
     {
         $patient = PasienModel::findOrFail($no_rm);
@@ -104,6 +116,7 @@ class PasienModelController extends Controller
         }
 
         try {
+            // Update data pasien
             $patient->update([
                 'nama_pasien' => $request->nama_pasien,
                 'alamat' => $request->alamat_pasien,
@@ -113,14 +126,23 @@ class PasienModelController extends Controller
                 'umur' => $request->umur,
                 'tgl_masuk' => $request->tgl_masuk,
                 'tgl_periksa' => $request->tgl_periksa,
-                'departemen' => $request->departemen, // Menggunakan `departemen`
-                'daftarDokterId' => $request->daftarDokterId, // Menggunakan `daftarDokterId`
+                'departemen' => $request->departemen,
+                'daftarDokterId' => $request->daftarDokterId,
                 'updatedBy' => Auth::user()->name,
+            ]);
+
+            // Masukkan data ke tabel HistoryPasienPeriksa
+            HistoryPasienPeriksa::create([
+                'no_rm' => $patient->no_rm,
+                'tanggal_periksa' => $request->tgl_periksa,
+                'departemen' => $request->departemen,
+                'dokter_id' => $request->daftarDokterId,
+                'catatan' => $request->catatan ?? null,
             ]);
 
             return response()->json([
                 'success' => true,
-                'message' => 'Data pasien berhasil diperbarui',
+                'message' => 'Data pasien berhasil diperbarui dan riwayat pemeriksaan dicatat.',
                 'data' => $patient,
             ], 200);
 

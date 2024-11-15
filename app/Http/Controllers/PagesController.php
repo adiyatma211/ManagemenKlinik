@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Schadule;
 use App\Models\DokterModel;
 use App\Models\PasienModel;
@@ -10,12 +11,26 @@ use App\Models\DepartemenModel;
 use App\Models\InventarisModel;
 use App\Models\RekamPasienModel;
 use App\Models\MasterRekamPasien;
+use Illuminate\Support\Facades\DB;
+use App\Models\HistoryPasienPeriksa;
 
 class PagesController
 {
 
     public function base(){
-        return view('dashboard.v_dash');
+        $showDokter = DokterModel::count();
+        $showPasien = PasienModel::count();
+        $showHistory = HistoryPasienPeriksa::count();
+        $countUsersAdminAndSuster = User::whereIn('role', ['admin', 'suster'])->count();
+        $total = $showDokter+$countUsersAdminAndSuster;
+        $visitsData = HistoryPasienPeriksa::select(
+            DB::raw("MONTH(tanggal_periksa) as month"),
+            DB::raw("COUNT(*) as count")
+        )
+        ->groupBy('month')
+        ->orderBy('month')
+        ->get();
+        return view('dashboard.v_dash',compact('visitsData','showDokter','showPasien','showHistory','total'));
     }
     // =============================================== //
 
@@ -95,45 +110,12 @@ class PagesController
         return view('manageInventaris.v_reportAlatMedis', compact('inventaris'));
     }
 
-    // USER LANDING PAGE
+    public function historyPasienUser(){
 
-    public function pasienLanding(){
-        $showNota = MasterRekamPasien::all();
-        $ShowPatien = PasienModel::with('dokter')->get();
-        $departemenList = DepartemenModel::all();
-        $showDokter = DokterModel::all();
-        $schedules = Schadule::all();
-        // $departemenListBiaya =DepartemenModel::first();
-        return view('layouts.lpBase',compact('departemenList','showDokter','schedules','ShowPatien','showNota'));
-    }
-    public function checkNoRm(Request $request)
-{
-    // Validate that 'no_rm' is provided
-    $request->validate([
-        'no_rm' => 'required|string'
-    ]);
+        $showHistory = HistoryPasienPeriksa::all();
+        return view('manageDokter.v_history',compact('showHistory'));
+    }   
+ 
 
-    // Retrieve the 'no_rm' from the request
-    $no_rm = $request->no_rm;
-
-    // Check if a patient with this 'no_rm' exists
-    $patient = PasienModel::where('no_rm', $no_rm)->first();
-
-    if ($patient) {
-        // If the patient exists, return a response indicating the record exists with patient data
-        return response()->json([
-            'exists' => true,
-            'message' => 'Patient record found',
-            'data' => $patient
-        ]);
-    } else {
-        // If no patient record is found, return a response indicating it does not exist
-        return response()->json([
-            'exists' => false,
-            'message' => 'No patient record found with this medical record number'
-        ]);
-    }
-}
-
-
+   
 }

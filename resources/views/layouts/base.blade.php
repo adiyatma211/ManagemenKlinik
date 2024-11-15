@@ -100,6 +100,9 @@
                                     <li class="submenu-item">
                                         <a href="/riwayatPasien" class="submenu-link">Rekam Medis Pasien</a>
                                     </li>
+                                    <li class="submenu-item">
+                                        <a href="/historypasien" class="submenu-link">History Pasien</a>
+                                    </li>
                                     
                                     <!-- Only admin and superadmin can see Parameter Dokter -->
                                     @if(in_array(Auth::user()->role, ['admin', 'superadmin']))
@@ -195,7 +198,7 @@
                             </a>
                             <ul class="submenu">
                                 <li class="submenu-item">
-                                    <a href="#" class="submenu-link">Profile</a>
+                                    <a href="/profile" class="submenu-link">Profile</a>
                                 </li>
                                 <li class="submenu-item">
                                     <form method="POST" action="{{ route('logout') }}" style="display: inline;">

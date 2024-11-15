@@ -1,10 +1,11 @@
 <!doctype html>
-<html class="no-js" lang="zxx">
+<html>
 
 <head>
     <meta charset="utf-8">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Medilix - Healthcare & Medical Bootstrap HTML5 Template</title>
+    <title>Klinik ABC</title>
     <meta name="description" content="Medilix - Healthcare & Medical Bootstrap HTML5 Template">
     <meta name="author" content="ahmmedsabbirbd">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -19,13 +20,44 @@
     <link rel="stylesheet" href="{{ asset('lpUser/assets/css/vendor/spacing.css') }}">
     <link rel="stylesheet" href="{{ asset('lpUser/assets/css/plugins/odometer-theme-default.css') }}">
     <link rel="stylesheet" href="{{ asset('lpUser/assets/css/main.css') }}">
+    <link rel="stylesheet" href="{{ asset('dist/assets/extensions/sweetalert2/sweetalert2.min.css') }}">
 </head>
 
-<body class="body-1">
 
-    <!--[if lte IE 9]>
-<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
-<![endif]-->
+<style>
+    .activity-card {
+        background: #f9f9f9;
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .activity-card-header {
+        font-size: 1rem;
+        font-weight: 600;
+        color: #333;
+    }
+
+    .activity-patient-name {
+        color: #4a4a4a;
+    }
+
+    .activity-date {
+        font-size: 0.875rem;
+    }
+
+    .activity-testimoni {
+        font-style: italic;
+        color: #666;
+    }
+
+    .activity-rating .activity-stars {
+        color: #ffc107;
+    }
+</style>
+
+
+<body class="body-1" onload="loadTestimonials()">
 
     <!-- preloader start -->
     <div id="preloader">
@@ -107,225 +139,7 @@
     <div class="offcanvas__overlay-white"></div>
     <!-- Offcanvas area start -->
 
-    <!-- Header area start -->
-    <header>
-        <div id="header-sticky" class="header__area header-1">
-            <div class="container">
-                <div class="mega__menu-wrapper p-relative">
-                    <div class="header__main">
-                        <div class="header__logo">
-                            <a href="index.html">
-                                <div class="logo">
-                                    <img src="{{ asset('lpUser/assets/imgs/logo/logo.svg') }}" alt="logo not found">
-                                </div>
-                            </a>
-                        </div>
 
-                        <div class="mean__menu-wrapper d-none d-lg-block">
-                            <div class="main-menu">
-                                <nav id="mobile-menu">
-                                    <ul>
-                                        <li class="has-dropdown has-mega-menu active">
-                                            <a href="javascript:void(0)">Home</a>
-                                            <ul class="mega-menu mega-menu-grid-3">
-                                                <li>
-                                                    <div class="home__menu-item">
-                                                        <div class="home__menu-thumb">
-                                                            <img src="{{ asset('lpUser/assets/imgs/menu/menu-home-1.jpg') }}"
-                                                                alt="thumb not found">
-                                                            <div class="home__menu-buttons">
-                                                                <a href="index.html" class="rr-btn">
-                                                                    <span class="btn-wrap">
-                                                                        <span class="text-one">MULTI PAGE <i
-                                                                                class="fa-solid fa-plus"></i></span>
-                                                                        <span class="text-two">MULTI PAGE <i
-                                                                                class="fa-solid fa-plus"></i></span>
-                                                                    </span>
-                                                                </a>
-                                                                <a href="index-one-page.html" class="rr-btn">
-                                                                    <span class="btn-wrap">
-                                                                        <span class="text-one">ONE PAGE <i
-                                                                                class="fa-solid fa-plus"></i></span>
-                                                                        <span class="text-two">ONE PAGE <i
-                                                                                class="fa-solid fa-plus"></i></span>
-                                                                    </span>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                        <h4 class="home__menu-title">Eye Care</h4>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="home__menu-item">
-                                                        <div class="home__menu-thumb">
-                                                            <img src="{{ asset('lpUser/assets/imgs/menu/menu-home-2.jpg') }}"
-                                                                alt="thumb not found">
-                                                            <div class="home__menu-buttons">
-                                                                <a href="index-2.html" class="rr-btn">
-                                                                    <span class="btn-wrap">
-                                                                        <span class="text-one">MULTI PAGE <i
-                                                                                class="fa-solid fa-plus"></i></span>
-                                                                        <span class="text-two">MULTI PAGE <i
-                                                                                class="fa-solid fa-plus"></i></span>
-                                                                    </span>
-                                                                </a>
-                                                                <a href="index-2-one-page.html" class="rr-btn">
-                                                                    <span class="btn-wrap">
-                                                                        <span class="text-one">ONE PAGE <i
-                                                                                class="fa-solid fa-plus"></i></span>
-                                                                        <span class="text-two">ONE PAGE <i
-                                                                                class="fa-solid fa-plus"></i></span>
-                                                                    </span>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                        <h4 class="home__menu-title">Dental Care</h4>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="home__menu-item">
-                                                        <div class="home__menu-thumb">
-                                                            <img src="{{ asset('lpUser/assets/imgs/menu/menu-home-3.jpg') }}"
-                                                                alt="thumb not found">
-                                                            <div class="home__menu-buttons">
-                                                                <a href="index-3.html" class="rr-btn">
-                                                                    <span class="btn-wrap">
-                                                                        <span class="text-one">MULTI PAGE <i
-                                                                                class="fa-solid fa-plus"></i></span>
-                                                                        <span class="text-two">MULTI PAGE <i
-                                                                                class="fa-solid fa-plus"></i></span>
-                                                                    </span>
-                                                                </a>
-                                                                <a href="index-3-one-page.html" class="rr-btn">
-                                                                    <span class="btn-wrap">
-                                                                        <span class="text-one">ONE PAGE <i
-                                                                                class="fa-solid fa-plus"></i></span>
-                                                                        <span class="text-two">ONE PAGE <i
-                                                                                class="fa-solid fa-plus"></i></span>
-                                                                    </span>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                        <h4 class="home__menu-title">Medical Care</h4>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="home__menu-item">
-                                                        <div class="home__menu-thumb">
-                                                            <img src="{{ asset('lpUser/assets/imgs/menu/menu-home-4.jpg') }}"
-                                                                alt="thumb not found">
-                                                            <div class="home__menu-buttons">
-                                                                <a href="index-4.html" class="rr-btn">
-                                                                    <span class="btn-wrap">
-                                                                        <span class="text-one">MULTI PAGE <i
-                                                                                class="fa-solid fa-plus"></i></span>
-                                                                        <span class="text-two">MULTI PAGE <i
-                                                                                class="fa-solid fa-plus"></i></span>
-                                                                    </span>
-                                                                </a>
-                                                                <a href="index-4-one-page.html" class="rr-btn">
-                                                                    <span class="btn-wrap">
-                                                                        <span class="text-one">ONE PAGE <i
-                                                                                class="fa-solid fa-plus"></i></span>
-                                                                        <span class="text-two">ONE PAGE <i
-                                                                                class="fa-solid fa-plus"></i></span>
-                                                                    </span>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                        <h4 class="home__menu-title">Psycology & Counseling</h4>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="home__menu-item">
-                                                        <div class="home__menu-thumb">
-                                                            <img src="{{ asset('lpUser/assets/imgs/menu/menu-home-5.jpg') }}"
-                                                                alt="thumb not found">
-                                                            <div class="home__menu-buttons">
-                                                                <a href="index-5.html" class="rr-btn">
-                                                                    <span class="btn-wrap">
-                                                                        <span class="text-one">MULTI PAGE <i
-                                                                                class="fa-solid fa-plus"></i></span>
-                                                                        <span class="text-two">MULTI PAGE <i
-                                                                                class="fa-solid fa-plus"></i></span>
-                                                                    </span>
-                                                                </a>
-                                                                <a href="index-5-one-page.html" class="rr-btn">
-                                                                    <span class="btn-wrap">
-                                                                        <span class="text-one">ONE PAGE <i
-                                                                                class="fa-solid fa-plus"></i></span>
-                                                                        <span class="text-two">ONE PAGE <i
-                                                                                class="fa-solid fa-plus"></i></span>
-                                                                    </span>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                        <h4 class="home__menu-title">Skin Care</h4>
-                                                    </div>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                        <li class="has-dropdown ">
-                                            <a href="javascript:void(0)">Pages</a>
-                                            <ul class="submenu">
-                                                <li><a href="faq.html">Faq</a></li>
-                                                <li><a href="about-us.html">About us</a></li>
-                                                <li><a href="pricing.html">Pricing</a></li>
-                                                <li><a href="pricing-2.html">Pricing 2</a></li>
-                                                <li><a href="404.html">404 Page</a></li>
-                                                <li><a href="appoinment.html">Appointment</a></li>
-                                            </ul>
-                                        </li>
-                                        <li class="has-dropdown">
-                                            <a href="service.html">Services</a>
-                                            <ul class="submenu">
-                                                <li><a href="service.html">Service</a></li>
-                                                <li><a href="service-2.html">Service 2</a></li>
-                                                <li><a href="service-details.html">Services Details</a></li>
-                                            </ul>
-                                        </li>
-                                        <li class="has-dropdown">
-                                            <a href="doctor.html">Doctor</a>
-                                            <ul class="submenu">
-                                                <li><a href="doctor.html">Doctor</a></li>
-                                                <li><a href="doctor-2.html">Doctor 2</a></li>
-                                                <li><a href="doctor-details.html">Doctor Details</a></li>
-                                            </ul>
-                                        </li>
-                                        <li><a href="contact.html">contact</a></li>
-                                    </ul>
-                                </nav>
-                            </div>
-                        </div>
-
-                        <div class="header__right">
-                            <div class="header__action d-flex align-items-center">
-                                <div class="header__btn-wrap d-none d-sm-inline-flex">
-                                    <a href="contact.html" class="rr-btn rr-btn__primary">
-                                        <span class="btn-wrap">
-                                            <span class="text-one">Read More <i class="fa-solid fa-plus"></i></span>
-                                            <span class="text-two">Read More <i class="fa-solid fa-plus"></i></span>
-                                        </span>
-                                    </a>
-                                </div>
-
-                                <div class="header__hamburger ml-20 d-xl-none">
-                                    <div class="sidebar__toggle">
-                                        <a class="bar-icon" href="javascript:void(0)">
-                                            <span></span>
-                                            <span></span>
-                                            <span></span>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
-    <!-- Header area end -->
 
     <!-- Body main wrapper start -->
     <main class="body-background"> <!--for use #F2F7FD..  you can remove it any time-->
@@ -333,12 +147,12 @@
         <section class="banner banner__space overflow-hidden">
             <div class="container">
                 <div class="banner__shape">
-                    <img src="{{ asset('lpUser/assets/imgs/banner/banner-shape.png') }}" alt="image not found">
+                    <img src="{{ asset('assetLanding/bannerDoctor.png') }}" alt="image not found">
                 </div>
                 <div class="row">
                     <div class="col-12">
                         <div class="banner__content text-center">
-                            <h1 class="mb-25 mb-xs-20 title-animation">Meet Your Compassion In Eye Care With Us</h1>
+                            <h1 class="mb-25 mb-xs-20 title-animation">Bersama Kami Menyembuhkan Dunia </h1>
                             <a href="about-us.html" class="rr-btn">
                                 <div class="panel wow"></div>
                                 <span class="btn-wrap">
@@ -349,7 +163,7 @@
                             <div class="banner__media mt-45 mt-xs-35 position-relative">
                                 <div class="panel wow"></div>
                                 <img class="img-fluid" data-parallax='{"scale": 1.2, "smoothness": 15}'
-                                    src="{{ asset('lpUser/assets/imgs/banner/banner.jpg') }}" alt="images not found">
+                                    src="{{ asset('assetLanding/bannerDoctor.png') }}" alt="images not found">
                             </div>
                         </div>
                     </div>
@@ -518,10 +332,10 @@
 
                         <div class="treatment-process__media mb-30">
                             <img class="img-fluid" data-parallax='{"scale": 1.2, "smoothness": 15}'
-                                src="{{ asset('lpUser/assets/imgs/treatment-process/treatment-process.jpg') }}"
+                                src="{{ asset('assetLanding/bannerDoctor.png') }}"
                                 alt="image not found">
 
-                            <a href="https://www.youtube.com/watch?v=dyNpojnbNT4" class="popup-video zooming"
+                            <a href="https://www.youtube.com/watch?v=bwx2Z69S0YA" class="popup-video zooming"
                                 data-effect="mfp-move-from-top vertical-middle">
                                 <i class="fa-thin fa-play"></i>
                             </a>
@@ -640,7 +454,7 @@
                     <div class="col-xl-6">
                         <div class="testimonial__media">
                             <img class="img-fluid"
-                                src="{{ asset('lpUser/assets/imgs/testimonial/testimonial.png') }}"
+                                src="{{ asset('assetLanding/banner2.webp') }}"
                                 alt="image not found">
                         </div>
                     </div>
@@ -651,7 +465,7 @@
                                     <div class="testimonial__item">
                                         <div class="testimonial__item-icon mb-20 mb-xs-15">
                                             <img class="img-fluid"
-                                                src="{{ asset('lpUser/assets/imgs/testimonial/qoute.png') }}"
+                                                src="{{ asset('assetLanding/profile.webp') }}" width="40px"
                                                 alt="icon not found">
                                         </div>
 
@@ -664,8 +478,8 @@
                                         <div class="testimonial__item-author d-flex align-items-center">
                                             <div class="testimonial__item-thumb">
                                                 <img class="img-fluid"
-                                                    src="{{ asset('lpUser/assets/imgs/testimonial/thumb.png') }}"
-                                                    alt="icon not found">
+                                                  src="{{ asset('assetLanding/profile.webp') }}"
+                                                  width="40px"  alt="icon not found">
                                             </div>
                                             <div class="testimonial__item-text">
                                                 <h4>Eleanor Pena</h4>
@@ -678,8 +492,8 @@
                                     <div class="testimonial__item">
                                         <div class="testimonial__item-icon mb-20 mb-xs-15">
                                             <img class="img-fluid"
-                                                src="{{ asset('lpUser/assets/imgs/testimonial/qoute.png') }}"
-                                                alt="icon not found">
+                                            src="{{ asset('assetLanding/profile.webp') }}"
+                                            width="40px" alt="icon not found">
                                         </div>
 
                                         <div class="testimonial__item-content mb-35 mb-xs-30">
@@ -690,8 +504,8 @@
 
                                         <div class="testimonial__item-author d-flex align-items-center">
                                             <div class="testimonial__item-thumb">
-                                                <img class="img-fluid"
-                                                    src="{{ asset('lpUser/assets/imgs/testimonial/thumb.png') }}"
+                                                <img class="img-fluid" width="40px"
+                                                  src="{{ asset('assetLanding/profile.webp') }}"
                                                     alt="icon not found">
                                             </div>
                                             <div class="testimonial__item-text">
@@ -802,7 +616,7 @@
                         <div
                             class="ask-question__media text-lg-end text-center mt-xs-40 mt-sm-40 mt-md-40 position-relative overflow-hidden">
                             <img class="img-fluid"
-                                src="{{ asset('lpUser/assets/imgs/ask-quesiton/ask-question.png') }}"
+                                src="{{ asset('assetLanding/circleBanner.webp') }}"
                                 alt="image not found">
                         </div>
                     </div>
@@ -871,576 +685,90 @@
         </div>
         <!-- Brand area end -->
 
-        <!-- team area start -->
-        <section class="team section-space__bottom">
-            <div class="container">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="section__title-wrapper text-center mb-60 mb-xs-40">
-                            <h2 class="section__title mb-0 title-animation">Physician Directory</h2>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-12">
-                        <div class="swiper team__slider">
-                            <div class="swiper-wrapper">
-                                <div class="swiper-slide">
-                                    <div class="team__item">
-                                        <div class="team__item-media">
-                                            <img class="img-fluid"
-                                                src="{{ asset('lpUser/assets/imgs/team/team__item-1.jpg') }}"
-                                                alt="image not found">
-                                        </div>
-
-                                        <div class="team__item-content">
-                                            <div class="team__item-content-left">
-                                                <h4 class="mb-10"><a href="doctor-details.html">Kathryn Murphy</a>
-                                                </h4>
-                                                <p class="mb-0">Medical Assistant</p>
-                                            </div>
-
-                                            <div class="team__item-content-right">
-                                                <div class="team__item-content-share">
-                                                    <a href="https://x.com/">
-                                                        <svg width="16" height="16" viewBox="0 0 16 16"
-                                                            fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                            <path
-                                                                d="M9.52217 6.77686L15.4785 0.00195312H14.0671L8.89516 5.88451L4.76437 0.00195312H0L6.24656 8.89742L0 16.002H1.41155L6.87321 9.78977L11.2356 16.002H16L9.52183 6.77686H9.52217ZM7.58887 8.97579L6.95596 8.09L1.92015 1.04169H4.0882L8.15216 6.72991L8.78507 7.61569L14.0677 15.0095H11.8997L7.58887 8.97613V8.97579Z"
-                                                                fill="#071C3C" />
-                                                        </svg>
-                                                    </a>
-                                                    <a href="https://www.facebook.com/"><i
-                                                            class="fa-brands fa-facebook-f"></i></a>
-                                                    <a href="https://www.instagram.com/"><i
-                                                            class="fa-brands fa-instagram"></i></a>
-                                                    <a href="https://bd.linkedin.com/"><i
-                                                            class="fa-brands fa-linkedin-in"></i></a>
-                                                </div>
-                                                <button><i class="fa-regular fa-share-nodes"></i></button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="swiper-slide">
-                                    <div class="team__item">
-                                        <div class="team__item-media">
-                                            <img class="img-fluid"
-                                                src="{{ asset('lpUser/assets/imgs/team/team__item-2.jpg') }}"
-                                                alt="image not found">
-                                        </div>
-
-                                        <div class="team__item-content">
-                                            <div class="team__item-content-left">
-                                                <h4 class="mb-10"><a href="doctor-details.html">Savannah Nguyen</a>
-                                                </h4>
-                                                <p class="mb-0">Medical Assistant</p>
-                                            </div>
-
-                                            <div class="team__item-content-right">
-                                                <div class="team__item-content-share">
-                                                    <a href="https://x.com/">
-                                                        <svg width="16" height="16" viewBox="0 0 16 16"
-                                                            fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                            <path
-                                                                d="M9.52217 6.77686L15.4785 0.00195312H14.0671L8.89516 5.88451L4.76437 0.00195312H0L6.24656 8.89742L0 16.002H1.41155L6.87321 9.78977L11.2356 16.002H16L9.52183 6.77686H9.52217ZM7.58887 8.97579L6.95596 8.09L1.92015 1.04169H4.0882L8.15216 6.72991L8.78507 7.61569L14.0677 15.0095H11.8997L7.58887 8.97613V8.97579Z"
-                                                                fill="#071C3C" />
-                                                        </svg>
-                                                    </a>
-                                                    <a href="https://www.facebook.com/"><i
-                                                            class="fa-brands fa-facebook-f"></i></a>
-                                                    <a href="https://www.instagram.com/"><i
-                                                            class="fa-brands fa-instagram"></i></a>
-                                                    <a href="https://bd.linkedin.com/"><i
-                                                            class="fa-brands fa-linkedin-in"></i></a>
-                                                </div>
-                                                <button><i class="fa-regular fa-share-nodes"></i></button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="swiper-slide">
-                                    <div class="team__item">
-                                        <div class="team__item-media">
-                                            <img class="img-fluid"
-                                                src="{{ asset('lpUser/assets/imgs/team/team__item-3.jpg') }}"
-                                                alt="image not found">
-                                        </div>
-
-                                        <div class="team__item-content">
-                                            <div class="team__item-content-left">
-                                                <h4 class="mb-10"><a href="doctor-details.html">Courtney Henry</a>
-                                                </h4>
-                                                <p class="mb-0">Medical Assistant</p>
-                                            </div>
-
-                                            <div class="team__item-content-right">
-                                                <div class="team__item-content-share">
-                                                    <a href="https://x.com/">
-                                                        <svg width="16" height="16" viewBox="0 0 16 16"
-                                                            fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                            <path
-                                                                d="M9.52217 6.77686L15.4785 0.00195312H14.0671L8.89516 5.88451L4.76437 0.00195312H0L6.24656 8.89742L0 16.002H1.41155L6.87321 9.78977L11.2356 16.002H16L9.52183 6.77686H9.52217ZM7.58887 8.97579L6.95596 8.09L1.92015 1.04169H4.0882L8.15216 6.72991L8.78507 7.61569L14.0677 15.0095H11.8997L7.58887 8.97613V8.97579Z"
-                                                                fill="#071C3C" />
-                                                        </svg>
-                                                    </a>
-                                                    <a href="https://www.facebook.com/"><i
-                                                            class="fa-brands fa-facebook-f"></i></a>
-                                                    <a href="https://www.instagram.com/"><i
-                                                            class="fa-brands fa-instagram"></i></a>
-                                                    <a href="https://bd.linkedin.com/"><i
-                                                            class="fa-brands fa-linkedin-in"></i></a>
-                                                </div>
-                                                <button><i class="fa-regular fa-share-nodes"></i></button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="swiper-slide">
-                                    <div class="team__item">
-                                        <div class="team__item-media">
-                                            <img class="img-fluid"
-                                                src="{{ asset('lpUser/assets/imgs/team/team__item-4.jpg') }}"
-                                                alt="image not found">
-                                        </div>
-
-                                        <div class="team__item-content">
-                                            <div class="team__item-content-left">
-                                                <h4 class="mb-10"><a href="doctor-details.html">Kathryn Murphy</a>
-                                                </h4>
-                                                <p class="mb-0">Medical Assistant</p>
-                                            </div>
-
-                                            <div class="team__item-content-right">
-                                                <div class="team__item-content-share">
-                                                    <a href="https://x.com/">
-                                                        <svg width="16" height="16" viewBox="0 0 16 16"
-                                                            fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                            <path
-                                                                d="M9.52217 6.77686L15.4785 0.00195312H14.0671L8.89516 5.88451L4.76437 0.00195312H0L6.24656 8.89742L0 16.002H1.41155L6.87321 9.78977L11.2356 16.002H16L9.52183 6.77686H9.52217ZM7.58887 8.97579L6.95596 8.09L1.92015 1.04169H4.0882L8.15216 6.72991L8.78507 7.61569L14.0677 15.0095H11.8997L7.58887 8.97613V8.97579Z"
-                                                                fill="#071C3C" />
-                                                        </svg>
-                                                    </a>
-                                                    <a href="https://www.facebook.com/"><i
-                                                            class="fa-brands fa-facebook-f"></i></a>
-                                                    <a href="https://www.instagram.com/"><i
-                                                            class="fa-brands fa-instagram"></i></a>
-                                                    <a href="https://bd.linkedin.com/"><i
-                                                            class="fa-brands fa-linkedin-in"></i></a>
-                                                </div>
-                                                <button><i class="fa-regular fa-share-nodes"></i></button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="swiper-slide">
-                                    <div class="team__item">
-                                        <div class="team__item-media">
-                                            <img class="img-fluid"
-                                                src="{{ asset('lpUser/assets/imgs/team/team__item-5.jpg') }}"
-                                                alt="image not found">
-                                        </div>
-
-                                        <div class="team__item-content">
-                                            <div class="team__item-content-left">
-                                                <h4 class="mb-10"><a href="doctor-details.html">Savannah Nguyen</a>
-                                                </h4>
-                                                <p class="mb-0">Medical Assistant</p>
-                                            </div>
-
-                                            <div class="team__item-content-right">
-                                                <div class="team__item-content-share">
-                                                    <a href="https://x.com/">
-                                                        <svg width="16" height="16" viewBox="0 0 16 16"
-                                                            fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                            <path
-                                                                d="M9.52217 6.77686L15.4785 0.00195312H14.0671L8.89516 5.88451L4.76437 0.00195312H0L6.24656 8.89742L0 16.002H1.41155L6.87321 9.78977L11.2356 16.002H16L9.52183 6.77686H9.52217ZM7.58887 8.97579L6.95596 8.09L1.92015 1.04169H4.0882L8.15216 6.72991L8.78507 7.61569L14.0677 15.0095H11.8997L7.58887 8.97613V8.97579Z"
-                                                                fill="#071C3C" />
-                                                        </svg>
-                                                    </a>
-                                                    <a href="https://www.facebook.com/"><i
-                                                            class="fa-brands fa-facebook-f"></i></a>
-                                                    <a href="https://www.instagram.com/"><i
-                                                            class="fa-brands fa-instagram"></i></a>
-                                                    <a href="https://bd.linkedin.com/"><i
-                                                            class="fa-brands fa-linkedin-in"></i></a>
-                                                </div>
-                                                <button><i class="fa-regular fa-share-nodes"></i></button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="swiper-slide">
-                                    <div class="team__item">
-                                        <div class="team__item-media">
-                                            <img class="img-fluid"
-                                                src="{{ asset('lpUser/assets/imgs/team/team__item-3.jpg') }}"
-                                                alt="image not found">
-                                        </div>
-
-                                        <div class="team__item-content">
-                                            <div class="team__item-content-left">
-                                                <h4 class="mb-10"><a href="doctor-details.html">Courtney Henry</a>
-                                                </h4>
-                                                <p class="mb-0">Medical Assistant</p>
-                                            </div>
-
-                                            <div class="team__item-content-right">
-                                                <div class="team__item-content-share">
-                                                    <a href="https://x.com/">
-                                                        <svg width="16" height="16" viewBox="0 0 16 16"
-                                                            fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                            <path
-                                                                d="M9.52217 6.77686L15.4785 0.00195312H14.0671L8.89516 5.88451L4.76437 0.00195312H0L6.24656 8.89742L0 16.002H1.41155L6.87321 9.78977L11.2356 16.002H16L9.52183 6.77686H9.52217ZM7.58887 8.97579L6.95596 8.09L1.92015 1.04169H4.0882L8.15216 6.72991L8.78507 7.61569L14.0677 15.0095H11.8997L7.58887 8.97613V8.97579Z"
-                                                                fill="#071C3C" />
-                                                        </svg>
-                                                    </a>
-                                                    <a href="https://www.facebook.com/"><i
-                                                            class="fa-brands fa-facebook-f"></i></a>
-                                                    <a href="https://www.instagram.com/"><i
-                                                            class="fa-brands fa-instagram"></i></a>
-                                                    <a href="https://bd.linkedin.com/"><i
-                                                            class="fa-brands fa-linkedin-in"></i></a>
-                                                </div>
-                                                <button><i class="fa-regular fa-share-nodes"></i></button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="team__scrollbar mt-80 mt-sm-60 mt-xs-45"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!-- team area end -->
+        
 
         <!-- take-appointment area start -->
-        <section class="take-appointment section-space overflow-hidden">
+        @yield('kontenUser')
+
+        <!-- Testimoni Section -->
+        <!-- Testimoni Section -->
+        <section class="section-space__bottom">
             <div class="container">
-                <div class="take-appointment__container-shape"
-                    data-background="{{ asset('lpUser/assets/imgs/take-appointment/container-shape.png') }}">
-                </div>
-                <div class="row">
-                    <div class="col-lg-6">
-                        <div class="section__title-wrapper take-appointment__content">
-                            <h5 class="section__subtitle color-theme-primary mb-15 mb-xs-10 title-animation">
-                                <img src="{{ asset('lpUser/assets/imgs/ask-quesiton/heart.png') }}"
-                                    alt="icon not found" class="img-fluid">
-                                Take appointment
-                            </h5>
-                            <h2 class="section__title mb-20 mb-xs-15 title-animation">Infinite Wellness Where
-                                Possibilities Unfold</h2>
-                            <p class="mb-30 mb-xs-25">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sit
-                                amet rcus nunc. Duis egestas ac ante sed Lorem ipsum dolor sit amet, consectetur
-                                adipiscing elit.</p>
-                            <div class="take-appointment__call d-flex align-items-center">
-                                <div class="take-appointment__call-icon">
-                                    <i class="fa-solid fa-phone"></i>
-                                </div>
-                                <div class="take-appointment__call-text">
-                                    <p class="mb-0">Requesting A Call:</p>
-                                    <h5 class="mb-0"><a href="tel:6295550129">(629) 555-0129</a></h5>
-                                </div>
+                <!-- Form Input Testimoni -->
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="card mb-5 p-4 shadow-sm">
+                            <div class="card-body">
+                                <h3 class="section__title text-center mb-4">Berikan Testimoni Anda</h3>
+                                <form id="testimoniForm" onsubmit="submitTestimoni(event)">
+                                    <div class="mb-3">
+                                        <label for="no_rm" class="form-label">NO RM</label>
+                                        <input type="text" class="form-control" id="no_rm_testimoni"
+                                            name="no_rm_testimoni" placeholder="NO RM" required onblur="checkNoRm()">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="nama_pasien" class="form-label">Nama</label>
+                                        <input type="text" class="form-control" id="nama_pasien_testimoni"
+                                            name="nama_pasien_testimoni" placeholder="Masukkan Nama Anda" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="testimoni" class="form-label">Testimoni</label>
+                                        <textarea class="form-control" id="testimoni" name="testimoni" rows="4" placeholder="Tulis Testimoni Anda"
+                                            required></textarea>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="rating" class="form-label">Rating</label>
+                                        <select class="form-select" id="rating" name="rating" required>
+                                            <option value="">Pilih Rating</option>
+                                            <option value="1">1 - Sangat Buruk</option>
+                                            <option value="2">2 - Buruk</option>
+                                            <option value="3">3 - Cukup</option>
+                                            <option value="4">4 - Baik</option>
+                                            <option value="5">5 - Sangat Baik</option>
+                                        </select>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary mt-3 w-100">Kirim Testimoni</button>
+                                </form>
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    <div class="col-lg-6">
-                        <div class="take-appointment__form mt-md-50 mt-sm-40 mt-xs-40">
-                            <!-- Tabs for switching between "New Patient" and "Returning Patient" -->
-                            <ul class="nav nav-tabs" id="appointmentTab" role="tablist">
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link active" id="new-patient-tab" data-bs-toggle="tab"
-                                        data-bs-target="#new-patient" type="button" role="tab"
-                                        aria-controls="new-patient" aria-selected="true">New Patient</button>
-                                </li>
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="returning-patient-tab" data-bs-toggle="tab"
-                                        data-bs-target="#returning-patient" type="button" role="tab"
-                                        aria-controls="returning-patient" aria-selected="false">Returning
-                                        Patient</button>
-                                </li>
-                            </ul>
-
-                            <div class="tab-content" id="appointmentTabContent">
-                                <!-- New Patient Form -->
-                                <div class="tab-pane fade show active" id="new-patient" role="tabpanel"
-                                    aria-labelledby="new-patient-tab">
-                                    <div class="row mt-4">
-                                        <div class="col-sm-6">
-                                            <div class="take-appointment__form-input">
-                                                <label for="new_name">Nama Lengkap</label>
-                                                <div class="input-wrapper">
-                                                    <input name="nama_pasien" id="new_name" type="text"
-                                                        placeholder="Your name...">
-                                                    <i class="fa-solid fa-user"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <div class="take-appointment__form-input">
-                                                <label for="new_gender">Jenis Kelamin</label>
-                                                <div class="take-appointment__form-input-select">
-                                                    <select id="new_gender" name="jenis_kelamin">
-                                                        <option>Select gender...</option>
-                                                        <option value="Laki-Laki">Male</option>
-                                                        <option value="Perempuan">Female</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <div class="take-appointment__form-input">
-                                                <label for="new_dob">Tanggal Lahir</label>
-                                                <div class="input-wrapper">
-                                                    <input name="tgllahir" id="new_dob" type="date"
-                                                        placeholder="YYYY-MM-DD">
-                                                    <i class="fa-solid fa-calendar"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <div class="take-appointment__form-input">
-                                                <label for="new_phone">No Telepon</label>
-                                                <div class="input-wrapper">
-                                                    <input name="no_telp" id="new_phone" type="text"
-                                                        placeholder="Your phone...">
-                                                    <i class="fa-solid fa-phone"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <div class="take-appointment__form-input">
-                                                <label for="new_departemen">Departemen Periksa:</label>
-                                                <div class="form-group">
-                                                    <select class="form-select" id="new_departemen" name="departemen"
-                                                        onchange="fetchDoctors(this.value)">
-                                                        <option value="">Pilih Departemen</option>
-                                                        @foreach ($departemenList as $departemen)
-                                                            <option value="{{ $departemen->id }}">
-                                                                {{ $departemen->nama_departemen }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <div class="take-appointment__form-input">
-                                                <label for="new_daftardokter">Daftar Dokter:</label>
-                                                <div class="form-group">
-                                                    <select class="form-select" id="new_daftardokter"
-                                                        name="daftarDokterId">
-                                                        <option value="">Pilih Dokter</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <div class="take-appointment__form-input">
-                                                <label for="new_datepicker">Tanggal Periksa</label>
-                                                <div class="input-wrapper">
-                                                    <input id="new_datepicker" name="tgl_periksa" type="text"
-                                                        placeholder="YY/MM/DD">
-                                                    <i class="fa-solid fa-calendar-days"></i>
-                                                </div>
-                                            </div>
-                                        </div>
+                <!-- Display Testimonials -->
+                <div class="row">
+                    <div class="col-12 text-center mb-4">
+                        <h3 class="section__title">Aktivitas Testimoni Pasien</h3>
+                    </div>
+                </div>
+                <div class="row" id="testimoniContainer">
+                    @foreach($testimonials as $testimoni)
+                        <div class="col-md-6 col-lg-4 mb-3">
+                            <div class="card p-3 shadow-sm activity-card">
+                                <div class="card-body">
+                                    <div class="activity-card-header d-flex justify-content-between align-items-center">
+                                        <h5 class="activity-patient-name mb-0">{{ $testimoni->nama_pasien }}</h5>
+                                        <small class="activity-date text-muted">{{ \Carbon\Carbon::parse($testimoni->created_at)->format('d-m-Y') }}</small>
                                     </div>
-                                </div>
-
-                                <!-- Returning Patient Form -->
-                                <div class="tab-pane fade" id="returning-patient" role="tabpanel"
-                                    aria-labelledby="returning-patient-tab">
-                                    <div class="row mt-4">
-                                        <div class="col-sm-6">
-                                            <div class="take-appointment__form-input">
-                                                <label for="patient-id">Nomor Rekam Medis</label>
-                                                <div class="input-wrapper">
-                                                    <input name="no_rm" id="no_rm" type="text"
-                                                        placeholder="Enter your patient ID..."
-                                                        onblur="checkNoRm(this.value)">
-                                                    <i class="fa-solid fa-id-badge"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-sm-6">
-                                            <div class="take-appointment__form-input">
-                                                <label for="gender">Jenis Kelamin</label>
-                                                <div class="form-group">
-                                                    <select class="form-select" id="gender" name="jenis_kelamin">
-                                                        <option value="">Pilih Jenis Kelamin</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <div class="take-appointment__form-input">
-                                                <label for="dob">Tanggal Lahir</label>
-                                                <div class="input-wrapper">
-                                                    <input name="tgllahir" id="dob" type="date"
-                                                        placeholder="YYYY-MM-DD">
-                                                    <i class="fa-solid fa-calendar"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <div class="take-appointment__form-input">
-                                                <label for="phone">No Telepon</label>
-                                                <div class="input-wrapper">
-                                                    <input name="no_telp" id="phone" type="text"
-                                                        placeholder="Your phone...">
-                                                    <i class="fa-solid fa-phone"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <div class="take-appointment__form-input">
-                                                <label for="departemen">Departemen Periksa:</label>
-                                                <div class="form-group">
-                                                    <select class="form-select" id="departemen" name="departemen"
-                                                        onchange="fetchDoctors(this.value)">
-                                                        <option value="">Pilih Departemen</option>
-                                                        @foreach ($departemenList as $departemen)
-                                                            <option value="{{ $departemen->id }}">
-                                                                {{ $departemen->nama_departemen }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <div class="take-appointment__form-input">
-                                                <label for="daftardokter">Daftar Dokter:</label>
-                                                <div class="form-group">
-                                                    <select class="form-select" id="daftardokter"
-                                                        name="daftarDokterId">
-                                                        <option value="">Pilih Dokter</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <div class="take-appointment__form-input">
-                                                <label for="datepicker">Tanggal Periksa</label>
-                                                <div class="input-wrapper">
-                                                    <input id="datepicker" name="tgl_periksa" type="text"
-                                                        placeholder="YY/MM/DD">
-                                                    <i class="fa-solid fa-calendar-days"></i>
-                                                </div>
-                                            </div>
-                                        </div>
+                                    <p class="activity-testimoni mb-2">"{{ $testimoni->testimoni }}"</p>
+                                    <div class="activity-rating">
+                                        <strong>Rating:</strong>
+                                        <span class="activity-stars">
+                                            {!! str_repeat('⭐', $testimoni->rating) !!}
+                                        </span>
                                     </div>
                                 </div>
                             </div>
-
-                            <!-- Submit Button for Both Forms -->
-                            <div class="col-12 mt-4">
-                                <button type="submit" class="rr-btn rr-btn__primary-color mt-10 mt-xs-10">
-                                    <span class="btn-wrap">
-                                        <span class="text-one">Appointment now <i class="fa-solid fa-plus"></i></span>
-                                        <span class="text-two">Appointment now <i class="fa-solid fa-plus"></i></span>
-                                    </span>
-                                </button>
-                            </div>
                         </div>
-                    </div>
+                    @endforeach
                 </div>
+                
             </div>
         </section>
-        <!-- take-appointment area end -->
 
-        <!-- blog area start -->
-        <section class="blog section-space__bottom">
-            <div class="container">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="section__title-wrapper text-center mb-60 mb-xs-40">
-                            <h2 class="section__title mb-0 title-animation">Latest Blog Hub</h2>
-                        </div>
-                    </div>
-                </div>
 
-                <div class="row mb-minus-30">
-                    <div class="col-xl-4 col-md-6">
-                        <div class="blog__item mb-30">
-                            <a href="blog-details.html"
-                                class="blog__item-media d-block position-relative overflow-hidden">
-                                <div class="panel wow"></div>
-                                <img class="img-fluid" src="{{ asset('lpUser/assets/imgs/blog/blog-item-1.jpg') }}"
-                                    alt="image not found">
-                            </a>
 
-                            <div class="blog__item-content">
-                                <div class="blog__item-content-date mb-15 mb-xs-10"><i
-                                        class="fa-solid fa-calendar-days"></i> <span>October 19, 2022</span></div>
-                                <h4 class="mb-15 mb-xs-10"><a href="blog-details.html">Optimal Oasis Nurturing Health
-                                        in Every Aspect</a></h4>
-                                <p class="mb-40 mb-xs-30">Explore the dynamic commerce through our insightful blogs.
-                                    Learn Explore the dynamic</p>
 
-                                <a class="rr-a-btn" href="blog-details.html">View More <i
-                                        class="fa-solid fa-circle-plus"></i></a>
-                            </div>
-                        </div>
-                    </div>
 
-                    <div class="col-xl-4 col-md-6">
-                        <div class="blog__item mb-30">
-                            <a href="blog-details.html"
-                                class="blog__item-media d-block position-relative overflow-hidden">
-                                <div class="panel wow"></div>
-                                <img class="img-fluid" src="{{ asset('lpUser/assets/imgs/blog/blog-item-2.jpg') }}"
-                                    alt="image not found">
-                            </a>
-
-                            <div class="blog__item-content">
-                                <div class="blog__item-content-date mb-15 mb-xs-10"><i
-                                        class="fa-solid fa-calendar-days"></i> <span>October 19, 2022</span></div>
-                                <h4 class="mb-15 mb-xs-10"><a href="blog-details.html">Embark on Health Wellness
-                                        Begins</a></h4>
-                                <p class="mb-40 mb-xs-30">Explore the dynamic commerce through our insightful blogs.
-                                    Learn Explore the dynamic</p>
-
-                                <a class="rr-a-btn" href="blog-details.html">View More <i
-                                        class="fa-solid fa-circle-plus"></i></a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-xl-4 col-md-6">
-                        <div class="blog__item mb-30">
-                            <a href="blog-details.html"
-                                class="blog__item-media d-block position-relative overflow-hidden">
-                                <div class="panel wow"></div>
-                                <img class="img-fluid" src="{{ asset('lpUser/assets/imgs/blog/blog-item-3.jpg') }}"
-                                    alt="image not found">
-                            </a>
-
-                            <div class="blog__item-content">
-                                <div class="blog__item-content-date mb-15 mb-xs-10"><i
-                                        class="fa-solid fa-calendar-days"></i> <span>October 19, 2022</span></div>
-                                <h4 class="mb-15 mb-xs-10"><a href="blog-details.html">Flourishing Healthier Revive
-                                        Radiance</a></h4>
-                                <p class="mb-40 mb-xs-30">Explore the dynamic commerce through our insightful blogs.
-                                    Learn Explore the dynamic</p>
-
-                                <a class="rr-a-btn" href="blog-details.html">View More <i
-                                        class="fa-solid fa-circle-plus"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
         <!-- blog area end -->
 
     </main>
@@ -1488,7 +816,7 @@
     <!-- Footer area start -->
     <footer>
         <section class="footer__area-common white-bg overflow-hidden"
-            data-background="assets/imgs/footer/background.png">
+            data-background="{{asset('lpUser/assets/imgs/footer/background.png')}}">
             <div class="container">
                 <div class="row mb-minus-50">
                     <div class="col-lg-3 col-6">
@@ -1632,87 +960,152 @@
     <script src="{{ asset('lpUser/assets/js/plugins/smoothscroll.js/') }}"></script>
     <script src="{{ asset('lpUser/assets/js/vendor/ajax-form.js/') }}"></script>
     <script src="{{ asset('lpUser/assets/js/main.js/') }}"></script>
+    <script src="{{ asset('dist/assets/extensions/sweetalert2/sweetalert2.min.js') }}"></script>>
+    <script src="{{ asset('dist/assets/static/js/pages/sweetalert2.js') }}"></script>>
+
     <script>
-        function checkNoRm(no_rm) {
-            if (no_rm) {
-                fetch(`/reservasi/${no_rm}/edit`)
+        function logFormValues() {
+            console.log("NO RM:", document.getElementById("no_rm_testimoni").value);
+            console.log("Nama Pasien:", document.getElementById("nama_pasien_testimoni").value);
+            console.log("Testimoni:", document.getElementById("testimoni").value);
+            console.log("Rating:", document.getElementById("rating").value);
+        }
+
+        function checkNoRm() {
+            let noRm = document.getElementById("no_rm_testimoni").value;
+
+            noRm = parseInt(noRm, 10); // Convert to integer
+
+            if (!isNaN(noRm)) { // Check if noRm is a valid number
+                console.log("Sending fetch request for No RM:", noRm); // Debugging
+                fetch(`/index/dataPasien/${noRm}`)
                     .then(response => response.json())
                     .then(data => {
+                        console.log("Response Data:", data); // Debugging
                         if (data.success) {
-                            populateForm(data.patient);
+                            document.getElementById("nama_pasien_testimoni").value = data.patient.nama_pasien;
                         } else {
-                            alert("Patient data not found.");
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Data Tidak Ditemukan',
+                                text: 'No RM tidak ditemukan. Silakan periksa kembali.',
+                                confirmButtonText: 'OK'
+                            });
+                            document.getElementById("nama_pasien_testimoni").value = ""; // Reset nama pasien
                         }
                     })
-                    .catch(error => console.error('Error:', error));
-            }
-        }
-
-        function populateForm(patient) {
-            const activeTab = document.querySelector('.tab-pane.fade.show.active');
-
-            // Populate No RM
-            const noRmField = activeTab.querySelector('[name="no_rm"]');
-            if (noRmField) noRmField.value = patient.no_rm || '';
-
-            // Populate Nama Pasien
-            const namaPasienField = activeTab.querySelector('[name="nama_pasien"]');
-            if (namaPasienField) namaPasienField.value = patient.nama_pasien || '';
-
-            // Populate Gender
-            const genderField = activeTab.querySelector('[name="jenis_kelamin"]');
-            if (genderField) {
-                Array.from(genderField.options).forEach(option => {
-                    option.selected = option.value === patient.jenis_kelamin;
-                });
-            }
-
-            // Populate Tanggal Lahir
-            const dobField = activeTab.querySelector('[name="tgllahir"]');
-            if (dobField) dobField.value = patient.tgllahir || '';
-
-            // Populate No Telepon
-            const phoneField = activeTab.querySelector('[name="no_telp"]');
-            if (phoneField) phoneField.value = patient.no_telp || '';
-
-            // Populate Departemen
-            const departemenField = activeTab.querySelector('[name="departemen"]');
-            if (departemenField) departemenField.value = patient.departemen || '';
-
-            // Populate Dokter (after fetching)
-            fetchDoctors(patient.departemen, () => {
-                const doctorField = activeTab.querySelector('[name="daftarDokterId"]');
-                if (doctorField) doctorField.value = patient.daftarDokterId || '';
-            });
-
-            // Populate Tanggal Periksa
-            const tglPeriksaField = activeTab.querySelector('[name="tgl_periksa"]');
-            if (tglPeriksaField) tglPeriksaField.value = patient.tgl_periksa || '';
-        }
-
-        function fetchDoctors(departemenId, callback) {
-            const dokterSelect = document.getElementById('daftardokter');
-            dokterSelect.innerHTML = '<option value="">Pilih Dokter</option>'; // Clear existing options
-
-            if (departemenId) {
-                fetch(`/managePasien/${departemenId}`)
-                    .then(response => response.json())
-                    .then(doctors => {
-                        doctors.forEach(dokter => {
-                            const option = document.createElement('option');
-                            option.value = dokter.id;
-                            option.text = dokter.nama_dokter;
-                            dokterSelect.appendChild(option);
+                    .catch(error => {
+                        console.error("Fetch Error:", error); // Debugging
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Terjadi kesalahan saat mencari data pasien.',
+                            confirmButtonText: 'OK'
                         });
-                        if (typeof callback === "function") callback(); // Execute callback if provided
-                    })
-                    .catch(error => console.error('Error fetching doctors:', error));
+                        document.getElementById("nama_pasien_testimoni").value = ""; // Reset nama pasien
+                    });
+            } else {
+                console.log("No RM is empty or invalid, skipping fetch request.");
             }
         }
     </script>
 
+    <script>
+        // Function to submit a new testimonial
+        function submitTestimoni(event) {
+            event.preventDefault();
+            const data = {
+                no_rm: document.getElementById("no_rm_testimoni").value,
+                nama_pasien: document.getElementById("nama_pasien_testimoni").value,
+                testimoni: document.getElementById("testimoni").value,
+                rating: document.getElementById("rating").value
+            };
+
+            fetch('/index/testimoni/store', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(response => response.json())
+                .then(responseData => {
+                    if (responseData.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Terima Kasih!',
+                            text: 'Testimoni Anda berhasil dikirim.',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                        addTestimoniCard(responseData.data);
+                        document.getElementById("testimoniForm").reset();
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Gagal',
+                            text: responseData.message,
+                            confirmButtonText: 'OK'
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error("Submit Error:", error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Terjadi kesalahan saat mengirim testimoni.',
+                        confirmButtonText: 'OK'
+                    });
+                });
+        }
+
+        // Function to load testimonials on page load
+        function loadTestimonials() {
+            fetch('/index/testimoni/getall')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        data.testimonials.forEach(testimoni => addTestimoniCard(testimoni));
+                    } else {
+                        console.error("Failed to load testimonials:", data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error("Error fetching testimonials:", error);
+                });
+        }
+
+        // Function to add a testimonial card to the container
+        function addTestimoniCard(testimoni) {
+            const testimoniContainer = document.getElementById("testimoniContainer");
+            const card = document.createElement("div");
+            card.classList.add("col-md-6", "col-lg-4", "mb-3");
+
+            card.innerHTML = `
+            <div class="card p-3 shadow-sm activity-card">
+                <div class="card-body">
+                    <div class="activity-card-header d-flex justify-content-between align-items-center">
+                        <h5 class="activity-patient-name mb-0">${testimoni.nama_pasien}</h5>
+                        <small class="activity-date text-muted">${new Date().toLocaleDateString()}</small>
+                    </div>
+                    <p class="activity-testimoni mb-2">"${testimoni.testimoni}"</p>
+                    <div class="activity-rating">
+                        <strong>Rating:</strong>
+                        <span class="activity-stars">
+                            ${'⭐'.repeat(testimoni.rating)}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        `;
+            testimoniContainer.prepend(card);
+        }
+    </script>
 
 
+    <!-- Script untuk fetchDoctors -->
 
 </body>
 
